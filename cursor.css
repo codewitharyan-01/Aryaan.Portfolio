@@ -1,0 +1,32 @@
+/* ─── CUSTOM CURSOR ─── */
+.custom-cursor {
+  position: fixed; width: 8px; height: 8px;
+  background: var(--text); border-radius: 50%;
+  pointer-events: none; z-index: 10000;
+  transition: transform 0.1s ease;
+}
+.cursor-follower {
+  position: fixed; width: 40px; height: 40px;
+  border: 1px solid var(--text); border-radius: 50%;
+  pointer-events: none; z-index: 9999;
+  transition: transform 0.2s cubic-bezier(0.2, 1, 0.3, 1), background 0.3s, border-color 0.3s;
+}
+.cursor-active .cursor-follower {
+  transform: scale(1.5);
+  background: rgba(var(--accent-rgb), 0.1);
+  border-color: transparent;
+}
+
+@media (max-width: 900px) {
+  .custom-cursor, .cursor-follower { display: none; }
+}
+
+/* ─── SCROLLBAR ─── */
+::-webkit-scrollbar { width: 10px; }
+::-webkit-scrollbar-track { background: var(--bg); }
+::-webkit-scrollbar-thumb {
+  background: var(--border);
+  border-radius: 10px;
+  border: 3px solid var(--bg);
+}
+::-webkit-scrollbar-thumb:hover { background: var(--text-muted); }
