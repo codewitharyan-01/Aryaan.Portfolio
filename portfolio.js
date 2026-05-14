@@ -82,54 +82,79 @@ document.querySelectorAll('.animate-up, .animate-left, .animate-right').forEach(
 
 // ─── MOUSE-ONLY EFFECTS ───
 if (!isTouchDevice) {
-  // MAGNETIC ELEMENTS
-  document.querySelectorAll('.btn-prestige, .btn-secondary, .theme-toggle, .logo, .social-btn').forEach(btn => {
-    btn.addEventListener('mousemove', (e) => {
+  let mouseFrame;
+  let mouseX = 0;
+  let mouseY = 0;
+
+  const updateMouseEffects = () => {
+    // MAGNETIC ELEMENTS
+    document.querySelectorAll('.btn-prestige, .btn-secondary, .theme-toggle, .logo, .social-btn').forEach(btn => {
       const rect = btn.getBoundingClientRect();
-      const x = (e.clientX - rect.left - rect.width / 2) * 0.35;
-      const y = (e.clientY - rect.top - rect.height / 2) * 0.35;
-      btn.style.transform = `translate(${x}px, ${y}px)`;
-    });
-    btn.addEventListener('mouseleave', () => btn.style.transform = '');
-  });
+      const distThreshold = 100;
+      const centerX = rect.left + rect.width / 2;
+      const centerY = rect.top + rect.height / 2;
+      const dist = Math.hypot(mouseX - centerX, mouseY - centerY);
 
-  // HERO PARALLAX
-  const heroTitle = document.getElementById('hero-title');
-  if (heroTitle) {
-    const spans = heroTitle.querySelectorAll('span');
-    window.addEventListener('mousemove', (e) => {
-      const x = (e.clientX / window.innerWidth - 0.5) * 25;
-      const y = (e.clientY / window.innerHeight - 0.5) * 25;
+      if (dist < distThreshold) {
+        const x = (mouseX - centerX) * 0.35;
+        const y = (mouseY - centerY) * 0.35;
+        btn.style.transform = `translate3d(${x}px, ${y}px, 0)`;
+      } else {
+        btn.style.transform = '';
+      }
+    });
+
+    // HERO PARALLAX
+    const heroTitle = document.getElementById('hero-title');
+    if (heroTitle) {
+      const spans = heroTitle.querySelectorAll('span');
+      const px = (mouseX / window.innerWidth - 0.5) * 25;
+      const py = (mouseY / window.innerHeight - 0.5) * 25;
       spans.forEach((span, i) => {
-        span.style.transform = `translate3d(${x * (i * 0.04)}px, ${y * (i * 0.04)}px, 0)`;
+        span.style.transform = `translate3d(${px * (i * 0.04)}px, ${py * (i * 0.04)}px, 0)`;
       });
-    });
-  }
+    }
 
-  // 3D CARD EFFECT
-  document.querySelectorAll('.prestige-panel').forEach(card => {
-    card.addEventListener('mousemove', (e) => {
+    // 3D CARD EFFECT
+    document.querySelectorAll('.prestige-panel').forEach(card => {
       const rect = card.getBoundingClientRect();
-      const x = (e.clientX - rect.left) / rect.width - 0.5;
-      const y = (e.clientY - rect.top) / rect.height - 0.5;
-      card.style.transform = `perspective(1000px) rotateY(${x * 8}deg) rotateX(${y * -8}deg) translateY(-10px)`;
+      const inBounds = mouseX >= rect.left && mouseX <= rect.right && mouseY >= rect.top && mouseY <= rect.bottom;
+      
+      if (inBounds) {
+        const x = (mouseX - rect.left) / rect.width - 0.5;
+        const y = (mouseY - rect.top) / rect.height - 0.5;
+        card.style.transform = `perspective(1000px) rotateY(${x * 8}deg) rotateX(${y * -8}deg) translateY(-10px)`;
+      } else {
+        card.style.transform = '';
+      }
     });
-    card.addEventListener('mouseleave', () => {
-      card.style.transform = '';
-    });
-  });
-}
 
-// ─── CUSTOM CURSOR ───
-const cursor = document.getElementById('custom-cursor');
-if (cursor) {
+    // CUSTOM CURSOR
+    const cursor = document.getElementById('custom-cursor');
+    if (cursor) {
+      cursor.style.transform = `translate3d(${mouseX - 10}px, ${mouseY - 10}px, 0)`;
+    }
+
+    mouseFrame = null;
+  };
+
   document.addEventListener('mousemove', (e) => {
-    cursor.style.transform = `translate3d(${e.clientX - 10}px, ${e.clientY - 10}px, 0)`;
+    mouseX = e.clientX;
+    mouseY = e.clientY;
+    if (!mouseFrame) {
+      mouseFrame = requestAnimationFrame(updateMouseEffects);
+    }
   });
 
   document.querySelectorAll('a, button, .info-card, .logo').forEach(el => {
-    el.addEventListener('mouseenter', () => cursor.classList.add('expand'));
-    el.addEventListener('mouseleave', () => cursor.classList.remove('expand'));
+    el.addEventListener('mouseenter', () => {
+      const cursor = document.getElementById('custom-cursor');
+      if (cursor) cursor.classList.add('expand');
+    });
+    el.addEventListener('mouseleave', () => {
+      const cursor = document.getElementById('custom-cursor');
+      if (cursor) cursor.classList.remove('expand');
+    });
   });
 }
 
@@ -231,6 +256,46 @@ const contactEmailBtn = document.getElementById('contact-email');
 if (contactEmailBtn) {
   contactEmailBtn.addEventListener('click', (e) => {
     e.preventDefault();
-    navigator.clipboard.writeText('happier.aryan@gmail.com').then(() => showToast('Email copied! 📋'));
+    const email = 'happier.aryan@gmail.com';
+    navigator.clipboard.writeText(email).then(() => showToast('Email copied! 📋'));
   });
+}
+
+// ─── TILT-BASED THEME TOGGLE (GRAVITY SENSING) ───
+if (window.DeviceOrientationEvent) {
+  let lastOrientationTheme = savedTheme;
+  let lastToggleTime = 0;
+  const TILT_THRESHOLD = 40;
+  const BUFFER = 10; // Avoid flickering
+
+  window.addEventListener('deviceorientation', (event) => {
+    const now = Date.now();
+    if (now - lastToggleTime < 500) return; // Sensitivity control: Wait 500ms between changes
+
+    const tilt = event.beta; // Front-to-back tilt (-180 to 180)
+    if (tilt === null) return;
+
+    // Logic: If tilted significantly (e.g., > 40 degrees towards user), go Light
+    // If returned to flatter position (< 30 degrees), go Dark
+    if (tilt > (TILT_THRESHOLD + BUFFER) && lastOrientationTheme !== 'light') {
+      setTheme('light');
+      lastOrientationTheme = 'light';
+      lastToggleTime = now;
+    } else if (tilt < (TILT_THRESHOLD - BUFFER) && lastOrientationTheme !== 'dark') {
+      setTheme('dark');
+      lastOrientationTheme = 'dark';
+      lastToggleTime = now;
+    }
+  }, true);
+
+  // iOS Permission Handling (Required for modern Safari)
+  if (typeof DeviceOrientationEvent.requestPermission === 'function') {
+    document.addEventListener('click', () => {
+      DeviceOrientationEvent.requestPermission()
+        .then(response => {
+          if (response === 'granted') console.log('Gravity sensing enabled.');
+        })
+        .catch(console.error);
+    }, { once: true });
+  }
 }

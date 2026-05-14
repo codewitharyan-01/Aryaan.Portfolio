@@ -25,101 +25,84 @@
   <!-- DECORATIVE BACKGROUND -->
   <div class="bg-decorations">
     <!-- Icons -->
-    <div class="decor-item decor-pc" style="top: 15%; left: 10%;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8"/><path d="M12 17v4"/></svg></div>
-    <div class="decor-item decor-code" style="top: 65%; left: 85%;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg></div>
-    <div class="decor-item decor-terminal" style="top: 40%; left: 75%;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><polyline points="4 17 10 11 4 5"/><line x1="12" y1="19" x2="20" y2="19"/></svg></div>
-    <div class="decor-item decor-command" style="top: 80%; left: 15%;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><path d="M18 3a3 3 0 0 0-3 3v12a3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3H6a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3V6a3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3h12a3 3 0 0 0 3-3 3 3 0 0 0-3-3z"/></svg></div>
+    <div class="decor-item decor-pc" style="top: 10%; left: 5%;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8"/><path d="M12 17v4"/></svg></div>
+    <div class="decor-item decor-code" style="top: 80%; left: 90%;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg></div>
+    <div class="decor-item decor-terminal" style="top: 35%; left: 85%;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><polyline points="4 17 10 11 4 5"/><line x1="12" y1="19" x2="20" y2="19"/></svg></div>
+    <div class="decor-item decor-command" style="top: 90%; left: 10%;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><path d="M18 3a3 3 0 0 0-3 3v12a3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3H6a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3V6a3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3h12a3 3 0 0 0 3-3 3 3 0 0 0-3-3z"/></svg></div>
     
+    <!-- Code Streams -->
+    <div class="decor-stream" style="top: 15%; width: 100%;">console.log("System optimized..."); array.map(item => item.process()); fetch('/api/data').then(res => res.json());</div>
+    <div class="decor-stream" style="top: 75%; width: 100%; animation-delay: -30s;">if (user.active) { auth.verify(); } else { auth.redirect(); } const state = { loading: false, data: [] };</div>
+
     <!-- Languages / Text -->
-    <div class="decor-text" style="top: 5%; left: 45%;">PHP</div>
-    <div class="decor-text" style="top: 30%; left: 90%;">React.js</div>
-    <div class="decor-text" style="top: 70%; left: 5%;">JavaScript</div>
-    <div class="decor-text" style="top: 85%; left: 60%;">MySQL</div>
-    <div class="decor-text" style="top: 15%; left: 85%;">HTML5</div>
+    <div class="decor-text" style="top: 5%; left: 50%;">PHP</div>
+    <div class="decor-text" style="top: 25%; left: 95%;">React.js</div>
+    <div class="decor-text" style="top: 70%; left: 3%;">JavaScript</div>
+    <div class="decor-text" style="top: 95%; left: 55%;">MySQL</div>
+    <div class="decor-text" style="top: 12%; left: 90%;">HTML5</div>
     
     <!-- Code Snippets -->
-    <div class="decor-snippet" style="top: 50%; left: 10%;">if(success) { push(); }</div>
-    <div class="decor-snippet" style="top: 20%; left: 60%;">const dev = "Aryan";</div>
-    <div class="decor-snippet" style="top: 90%; left: 30%;">while(coding) { ship(); }</div>
+    <div class="decor-snippet" style="top: 55%; left: 8%;">if(success) { push(); }</div>
+    <div class="decor-snippet" style="top: 18%; left: 65%;">const dev = "Aryan";</div>
+    <div class="decor-snippet" style="top: 85%; left: 25%;">while(coding) { ship(); }</div>
+    <div class="decor-snippet" style="top: 40%; left: 12%;">import { motion } from "framer";</div>
     
     <!-- Binary Blocks -->
-    <div class="decor-binary" style="top: 10%; left: 20%;">10110</div>
-    <div class="decor-binary" style="top: 45%; left: 5%;">00101</div>
-    <div class="decor-binary" style="top: 75%; left: 90%;">11010</div>
-    <div class="decor-binary" style="top: 60%; left: 35%;">01110</div>
-    <div class="decor-binary" style="top: 25%; left: 15%;">10001</div>
-    <div class="decor-binary" style="top: 80%; left: 80%;">01011</div>
-    
-    <!-- More Snippets for lower sections -->
-    <div class="decor-snippet" style="top: 120vh; left: 70%;">import { motion } from "framer";</div>
-    <div class="decor-snippet" style="top: 180vh; left: 10%;">await connect();</div>
-    <div class="decor-snippet" style="top: 250vh; left: 80%;">system.optimize();</div>
-    <div class="decor-snippet" style="top: 320vh; left: 40%;">console.log("Success");</div>
+    <div class="decor-binary" style="top: 8%; left: 22%;">10110</div>
+    <div class="decor-binary" style="top: 42%; left: 4%;">00101</div>
+    <div class="decor-binary" style="top: 72%; left: 93%;">11010</div>
+    <div class="decor-binary" style="top: 65%; left: 38%;">01110</div>
+    <div class="decor-binary" style="top: 22%; left: 18%;">10001</div>
+    <div class="decor-binary" style="top: 85%; left: 78%;">01011</div>
 
     <!-- Circuitry Lines -->
-    <div class="decor-circuit" style="top: 10%; left: 0; width: 300px; height: 1px;"></div>
-    <div class="decor-circuit" style="top: 10%; left: 300px; width: 1px; height: 150px;"></div>
-    <div class="decor-circuit" style="top: 75%; right: 0; width: 200px; height: 1px;"></div>
-    <div class="decor-circuit" style="top: 60%; right: 200px; width: 1px; height: 200px;"></div>
+    <div class="decor-circuit" style="top: 15%; left: 0; width: 250px; height: 1px;"></div>
+    <div class="decor-circuit" style="top: 15%; left: 250px; width: 1px; height: 120px;"></div>
+    <div class="decor-circuit" style="top: 80%; right: 0; width: 180px; height: 1px;"></div>
     
     <!-- Measurements / Coordinates -->
-    <div class="decor-measure" style="top: 2%; left: 2%;">X: 000 | Y: 000</div>
-    <div class="decor-measure" style="top: 98%; left: 90%;">REF: 0x4A7</div>
-    <div class="decor-measure" style="top: 45%; left: 2%;">SCALE: 1.0</div>
-    <div class="decor-measure" style="top: 150vh; left: 85%;">DEBUG_MODE</div>
+    <div class="decor-measure" style="top: 3%; left: 3%;">X: 000 | Y: 000</div>
+    <div class="decor-measure" style="top: 96%; left: 85%;">REF: 0x4A7</div>
+    <div class="decor-measure" style="top: 48%; left: 3%;">SCALE: 1.0</div>
     
     <!-- Tags -->
-    <div class="decor-tag" style="top: 12%; left: 75%;">&lt;div&gt;</div>
-    <div class="decor-tag" style="top: 68%; left: 15%;">&lt;section&gt;</div>
-    <div class="decor-tag" style="top: 92%; left: 85%;">&lt;footer&gt;</div>
-
-    <div class="decor-snippet" style="top: 380vh; left: 10%;">php artisan serve</div>
-    <div class="decor-snippet" style="top: 420vh; left: 60%;">npm run build --prod</div>
+    <div class="decor-tag" style="top: 15%; left: 78%;">&lt;div&gt;</div>
+    <div class="decor-tag" style="top: 65%; left: 12%;">&lt;section&gt;</div>
+    <div class="decor-tag" style="top: 88%; left: 82%;">&lt;footer&gt;</div>
 
     <!-- AI Neural Network Clusters -->
-    <div class="decor-neural" style="top: 25%; left: 15%;">
-      <svg viewBox="0 0 100 100" width="120" height="120" stroke="currentColor" fill="none" stroke-width="0.5">
+    <div class="decor-neural" style="top: 30%; left: 12%;">
+      <svg viewBox="0 0 100 100" width="100" height="100" stroke="currentColor" fill="none" stroke-width="0.5">
         <circle cx="20" cy="20" r="2"/><circle cx="80" cy="20" r="2"/><circle cx="50" cy="50" r="3"/><circle cx="20" cy="80" r="2"/><circle cx="80" cy="80" r="2"/>
         <line x1="20" y1="20" x2="50" y2="50"/><line x1="80" y1="20" x2="50" y2="50"/><line x1="20" y1="80" x2="50" y2="50"/><line x1="80" y1="80" x2="50" y2="50"/>
       </svg>
     </div>
-    <div class="decor-neural" style="top: 70%; left: 75%;">
-      <svg viewBox="0 0 100 100" width="100" height="100" stroke="currentColor" fill="none" stroke-width="0.5">
+    <div class="decor-neural" style="top: 65%; left: 80%;">
+      <svg viewBox="0 0 100 100" width="80" height="80" stroke="currentColor" fill="none" stroke-width="0.5">
         <circle cx="50" cy="10" r="2"/><circle cx="10" cy="50" r="2"/><circle cx="90" cy="50" r="2"/><circle cx="50" cy="90" r="2"/><circle cx="50" cy="50" r="4"/>
         <line x1="50" y1="10" x2="50" y2="50"/><line x1="10" y1="50" x2="50" y2="50"/><line x1="90" y1="50" x2="50" y2="50"/><line x1="50" y1="90" x2="50" y2="50"/>
       </svg>
     </div>
 
-    <!-- GitHub Contribution Grid -->
-    <div class="decor-gh-grid" style="top: 35%; left: 5%;">
+    <!-- GitHub Grid -->
+    <div class="decor-gh-grid" style="top: 40%; left: 2%;">
       <div class="gh-cell"></div><div class="gh-cell active"></div><div class="gh-cell"></div><div class="gh-cell"></div><div class="gh-cell active"></div><br/>
-      <div class="gh-cell active"></div><div class="gh-cell"></div><div class="gh-cell active"></div><div class="gh-cell"></div><div class="gh-cell"></div><br/>
-      <div class="gh-cell"></div><div class="gh-cell"></div><div class="gh-cell"></div><div class="gh-cell active"></div><div class="gh-cell"></div>
-    </div>
-    <div class="decor-gh-grid" style="top: 88%; left: 45%;">
-      <div class="gh-cell active"></div><div class="gh-cell"></div><div class="gh-cell active"></div><div class="gh-cell"></div><div class="gh-cell"></div><br/>
-      <div class="gh-cell"></div><div class="gh-cell active"></div><div class="gh-cell"></div><div class="gh-cell active"></div><div class="gh-cell active"></div>
+      <div class="gh-cell active"></div><div class="gh-cell"></div><div class="gh-cell active"></div><div class="gh-cell"></div><div class="gh-cell"></div>
     </div>
 
-    <!-- Terminal Window Details -->
-    <div class="decor-term-header" style="top: 48%; left: 82%;">~/dev/aryan</div>
-    <div class="decor-term-header" style="top: 15%; left: 2%;">root@portfolio:~#</div>
+    <!-- Terminal Details -->
+    <div class="decor-term-header" style="top: 50%; left: 88%;">~/aryan</div>
+    <div class="decor-term-header" style="top: 18%; left: 2%;">root@dev:~#</div>
 
-    <!-- Architecture Blocks (Restored) -->
-    <div class="decor-text decor-arch" style="top: 10%; left: 45%; border: 1px solid var(--text); padding: 5px 15px; border-radius: 4px;">FRONTEND</div>
-    <div class="decor-text decor-arch" style="top: 55%; left: 10%; border: 1px solid var(--text); padding: 5px 15px; border-radius: 4px;">BACKEND</div>
-    <div class="decor-text decor-arch" style="top: 92%; left: 35%; border: 1px solid var(--text); padding: 5px 15px; border-radius: 4px;">DATABASE</div>
+    <!-- Architecture Blocks -->
+    <div class="decor-text decor-arch" style="top: 12%; left: 42%; border: 1px solid var(--text); padding: 4px 12px; border-radius: 4px;">FRONTEND</div>
+    <div class="decor-text decor-arch" style="top: 52%; left: 85%; border: 1px solid var(--text); padding: 4px 12px; border-radius: 4px;">BACKEND</div>
+    <div class="decor-text decor-arch" style="top: 90%; left: 22%; border: 1px solid var(--text); padding: 4px 12px; border-radius: 4px;">DATABASE</div>
 
-    <!-- Algorithm Data Paths -->
+    <!-- Algorithm Paths -->
     <div class="decor-algo" style="top: 5%; right: 5%;">
       <svg viewBox="0 0 200 100" width="200" height="100" stroke="currentColor" fill="none" stroke-width="0.5" opacity="0.3">
         <path d="M0,50 Q50,0 100,50 T200,50" />
-        <path d="M0,60 Q50,10 100,60 T200,60" opacity="0.5" />
-      </svg>
-    </div>
-    <div class="decor-algo" style="top: 80%; left: 5%;">
-      <svg viewBox="0 0 200 100" width="200" height="100" stroke="currentColor" fill="none" stroke-width="0.5" opacity="0.3">
-        <path d="M0,50 C50,100 150,0 200,50" />
       </svg>
     </div>
   </div>
@@ -736,10 +719,6 @@
           open.</p>
         <div class="contact-links">
           <a href="mailto:happier.aryan@gmail.com" class="btn-prestige" id="contact-email">Send Email</a>
-          <a href="https://linkedin.com" target="_blank" class="btn-secondary"
-            id="contact-linkedin">LinkedIn</a>
-          <a href="https://github.com/codewitharyan-01" target="_blank" class="btn-secondary">GitHub</a>
-          <a href="https://www.instagram.com/1.aryaan/" target="_blank" class="btn-secondary">Instagram</a>
           <a href="tel:+919023668571" class="btn-secondary" id="contact-phone">Call Me</a>
         </div>
       </div>

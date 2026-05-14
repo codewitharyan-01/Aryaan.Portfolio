@@ -60,11 +60,13 @@ body {
   background: var(--bg);
   color: var(--text);
   -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
   overflow-x: hidden;
   width: 100%;
   max-width: 100vw;
   transition: background-color 0.5s ease;
   position: relative;
+  line-height: 1.6;
 }
 
 /* ─── PREMIUM BACKGROUND ELEMENTS ─── */
@@ -82,6 +84,8 @@ body {
   /* Blueprint dot grid */
   background-image: radial-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px);
   background-size: 40px 40px;
+  will-change: transform;
+  transform: translateZ(0);
 }
 
 [data-theme="light"] .bg-blobs {
@@ -94,7 +98,8 @@ body {
   height: 600px;
   background: radial-gradient(circle, rgba(100, 100, 255, 0.12) 0%, transparent 70%);
   border-radius: 50%;
-  animation: move 25s infinite alternate;
+  animation: move 25s infinite alternate cubic-bezier(0.45, 0, 0.55, 1);
+  will-change: transform;
 }
 
 .blob:nth-child(2) {
@@ -107,7 +112,7 @@ body {
 
 /* ── Decorative Background Items ── */
 .bg-decorations {
-  position: absolute;
+  position: fixed;
   top: 0;
   left: 0;
   width: 100%;
@@ -115,22 +120,33 @@ body {
   z-index: -1;
   pointer-events: none;
   overflow: hidden;
+  will-change: transform;
+  transform: translateZ(0);
 }
 
-.decor-item, .decor-text, .decor-snippet, .decor-binary {
+.decor-item, .decor-text, .decor-snippet, .decor-binary, .decor-neural, .decor-gh-grid, .decor-algo, .decor-tag, .decor-measure, .decor-arch {
   position: absolute;
   color: var(--text);
-  opacity: 0.04;
+  opacity: 0.07;
   filter: grayscale(1);
   white-space: nowrap;
   user-select: none;
+  transition: opacity 0.5s ease;
+  will-change: transform, opacity;
+  backface-visibility: hidden;
 }
 
 [data-theme="light"] .decor-item, 
 [data-theme="light"] .decor-text, 
 [data-theme="light"] .decor-snippet, 
-[data-theme="light"] .decor-binary {
-  opacity: 0.08;
+[data-theme="light"] .decor-binary,
+[data-theme="light"] .decor-neural,
+[data-theme="light"] .decor-gh-grid,
+[data-theme="light"] .decor-algo,
+[data-theme="light"] .decor-tag,
+[data-theme="light"] .decor-measure,
+[data-theme="light"] .decor-arch {
+  opacity: 0.12;
 }
 
 /* Icons */
@@ -214,7 +230,7 @@ body {
 /* Architecture Blocks */
 .decor-arch {
   font-size: 0.65rem !important;
-  opacity: 0.03 !important;
+  opacity: 0.07 !important;
   border-color: var(--text) !important;
   animation: drift-decor 40s infinite linear !important;
 }
@@ -222,10 +238,8 @@ body {
 /* ── Animations ── */
 /* Neural Networks */
 .decor-neural {
-  position: absolute;
-  opacity: 0.04;
+  opacity: 0.07;
   animation: rotate-decor 60s infinite linear;
-  color: var(--text);
 }
 
 .decor-neural circle {
@@ -234,8 +248,7 @@ body {
 
 /* GitHub Grid */
 .decor-gh-grid {
-  position: absolute;
-  opacity: 0.04;
+  opacity: 0.07;
   line-height: 0;
 }
 
@@ -244,13 +257,13 @@ body {
   width: 10px;
   height: 10px;
   background: var(--text);
-  opacity: 0.1;
+  opacity: 0.15;
   margin: 2px;
   border-radius: 2px;
 }
 
 .gh-cell.active {
-  opacity: 0.4;
+  opacity: 0.5;
   animation: flicker-grid 10s infinite;
 }
 
@@ -259,10 +272,28 @@ body {
   position: absolute;
   font-family: monospace;
   font-size: 0.7rem;
-  opacity: 0.05;
+  opacity: 0.08;
   color: #4ade80; /* Subtle terminal green */
   padding: 2px 8px;
   border-left: 2px solid #4ade80;
+}
+
+/* Algorithm Paths */
+.decor-algo {
+  opacity: 0.06;
+  animation: drift-decor 40s infinite alternate linear;
+}
+
+/* Code Ticker / Stream */
+.decor-stream {
+  position: absolute;
+  font-family: monospace;
+  font-size: 0.75rem;
+  opacity: 0.06;
+  color: var(--text);
+  white-space: nowrap;
+  animation: stream-scroll 60s infinite linear;
+  text-shadow: 0 0 10px rgba(74, 222, 128, 0.2);
 }
 
 /* Algorithm Paths */
@@ -294,6 +325,11 @@ body {
   0% { top: -100%; }
   50% { top: 100%; }
   100% { top: 100%; }
+}
+
+@keyframes stream-scroll {
+  from { transform: translateX(100%); }
+  to { transform: translateX(-100%); }
 }
 
 @keyframes float-decor {
