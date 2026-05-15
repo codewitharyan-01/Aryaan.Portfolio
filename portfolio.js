@@ -132,7 +132,46 @@ if (!isTouchDevice) {
     // CUSTOM CURSOR
     const cursor = document.getElementById('custom-cursor');
     if (cursor) {
-      cursor.style.transform = `translate3d(${mouseX - 10}px, ${mouseY - 10}px, 0)`;
+      let targetX = mouseX;
+      let targetY = mouseY;
+      let targetWidth = 20;
+      let targetHeight = 20;
+      let targetOpacity = 1;
+      let isSnapping = false;
+
+      // Check for magnetic snapping
+      document.querySelectorAll('a, button, .skill-tag, .logo').forEach(el => {
+        const rect = el.getBoundingClientRect();
+        const centerX = rect.left + rect.width / 2;
+        const centerY = rect.top + rect.height / 2;
+        const dist = Math.hypot(mouseX - centerX, mouseY - centerY);
+        const snapThreshold = 60;
+
+        if (dist < snapThreshold) {
+          targetX = centerX;
+          targetY = centerY;
+          targetWidth = rect.width + 10;
+          targetHeight = rect.height + 10;
+          targetOpacity = 0.15;
+          isSnapping = true;
+          cursor.classList.add('snapping');
+        }
+      });
+
+      if (!isSnapping) {
+        cursor.classList.remove('snapping');
+        cursor.style.width = '';
+        cursor.style.height = '';
+        cursor.style.background = '';
+        cursor.style.opacity = '';
+      } else {
+        cursor.style.width = `${targetWidth}px`;
+        cursor.style.height = `${targetHeight}px`;
+        cursor.style.background = 'var(--text)';
+        cursor.style.opacity = targetOpacity;
+      }
+
+      cursor.style.transform = `translate3d(${targetX - (isSnapping ? targetWidth/2 : 10)}px, ${targetY - (isSnapping ? targetHeight/2 : 10)}px, 0)`;
     }
 
     mouseFrame = null;
@@ -261,41 +300,242 @@ if (contactEmailBtn) {
   });
 }
 
-// ─── TILT-BASED THEME TOGGLE (GRAVITY SENSING) ───
+// ─── AI COMMAND CENTER ───
+const aiTrigger = document.getElementById('ai-trigger');
+const aiModal = document.getElementById('ai-modal');
+const aiClose = document.getElementById('ai-close');
+const aiInput = document.getElementById('ai-input');
+const aiHistory = document.getElementById('ai-chat-history');
+const aiSend = document.getElementById('ai-send');
+
+const AI_DATABASE = {
+  // PROJECTS
+  'projects': 'Aryan has 15+ projects. Highlights include Wispa AI (Startup), Smart City Portal, and Life Fitness System.',
+  'wispa': 'Wispa AI is a startup project developing an AI device. It\'s funded by Govt. of India (SSIP Phase 1).',
+  'smart city': 'The Smart City Portal is a PHP/MySQL app for civic issue tracking. It reduced resolution time by 30%.',
+  'fitness': 'The Life Fitness System manages gym memberships, trainer assignments, and automated billing using PHP.',
+  'billing': 'Aryan built a custom billing system for dynamic invoice generation and inventory tracking.',
+  'freelance': 'He has delivered 15+ real-world web projects to diverse clients independently.',
+  
+  // SKILLS & TECH
+  'stack': 'His primary stack is PHP, React.js, MySQL, and AI Prompt Engineering.',
+  'languages': 'He codes in JavaScript, PHP, Java, HTML5, and CSS3.',
+  'frameworks': 'Proficient in React.js and WordPress.',
+  'ai': 'Aryan is an AI Builder & Prompt Engineer. He uses ChatGPT, Google Gen AI, and building his own AI startup.',
+  'database': 'He has strong expertise in MySQL and database optimization.',
+  'it support': 'He has 178 hours of experience in IT Support and technical troubleshooting.',
+  'networking': 'Experienced in backup recovery strategies and network engineering.',
+
+  // EDUCATION & AWARDS
+  'education': 'B.E. in Computer Engineering (SVBIT) and Diploma (Atul Polytechnic). Rank 1 in University!',
+  'cgpa': 'He maintained a 9.02 CGPA in his Diploma and is in the Top 10 for his B.E.',
+  'rank': 'Aryan achieved University Rank 1 in his Diploma and is currently Rank 10 in his Engineering batch.',
+  'awards': 'He won 2nd Runner-up at the Times of India Ideathon (₹30,000 prize) and 1st in Smart City Presentation.',
+  'hackathon': 'Participated in Google Gen AI Exchange Hackathon 2026.',
+  'university': 'Studying at SVBIT Gandhinagar (B.E.) and Alumnus of Atul Polytechnic (Diploma).',
+
+  // EXPERIENCE
+  'internship': 'Aryan has completed 5 internships: IT Support (Ascendant), Google Student Ambassador (Ping Digital), Webito, Iclerisy, and Talrop.',
+  'google': 'He was a Google Student Ambassador and intern at Ping Digital Broadcast.',
+  'webito': 'He worked as a Frontend Intern & Network Engineer at Webito Infotech.',
+  'iclerisy': 'Junior PHP Developer at Iclerisy, where he delivered client projects independently.',
+  'talrop': 'PR and R&D intern at Talrop, Kerala, including 16 days of on-site training.',
+
+  // CONTACT & PERSONAL
+  'contact': 'Email: happier.aryan@gmail.com | Phone: +91 90236 68571.',
+  'location': 'Aryan is based in Ahmedabad, Gujarat, India.',
+  'resume': 'You can download his CV/Resume using the "Download CV" buttons or typing "resume".',
+  'startup': 'He is the founder of Wispa AI, a startup focusing on AI-driven innovation.',
+  'help': 'Ask about: projects, skills, education, wispa, awards, internships, or contact info.'
+};
+
+function addMessage(text, isBot = true) {
+  const msg = document.createElement('div');
+  msg.className = `ai-msg ${isBot ? 'bot' : 'user'}`;
+  msg.innerHTML = text; // Allow for links
+  aiHistory.appendChild(msg);
+  aiHistory.scrollTop = aiHistory.scrollHeight;
+}
+
+function handleAICommand() {
+  const cmd = aiInput.value.toLowerCase().trim();
+  if (!cmd) return;
+  addMessage(cmd, false);
+  aiInput.value = '';
+
+  setTimeout(() => {
+    let response = "I'm not sure about that. Type 'help' for available topics!";
+    
+    // Improved Fuzzy Matching
+    const keys = Object.keys(AI_DATABASE);
+    const match = keys.find(key => cmd.includes(key));
+    
+    if (match) {
+      response = AI_DATABASE[match];
+    }
+
+    if (cmd.includes('theme')) setTheme(document.documentElement.getAttribute('data-theme') === 'light' ? 'dark' : 'light');
+    if (cmd.includes('resume')) window.open('resume.pdf', '_blank');
+    if (cmd.includes('hello') || cmd.includes('hi')) response = "Hi there! I'm Aryan's digital twin. Ask me about his 15+ projects!";
+    
+    addMessage(response);
+  }, 400);
+}
+
+function openAIModal() {
+  if (aiModal) {
+    aiModal.classList.add('active');
+    document.body.classList.add('modal-active');
+    setTimeout(() => aiInput.focus(), 300);
+  }
+}
+
+function closeAIModal() {
+  if (aiModal) {
+    aiModal.classList.remove('active');
+    document.body.classList.remove('modal-active');
+  }
+}
+
+// Auto-open after 10 seconds
+window.addEventListener('load', () => {
+  setTimeout(openAIModal, 10000);
+});
+
+if (aiModal) {
+  aiClose.addEventListener('click', closeAIModal);
+  aiSend.addEventListener('click', handleAICommand);
+  aiInput.addEventListener('keypress', (e) => { if (e.key === 'Enter') handleAICommand(); });
+  
+  // Shortcut Ctrl+K
+  document.addEventListener('keydown', (e) => {
+    if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
+      e.preventDefault();
+      openAIModal();
+    }
+    if (e.key === 'Escape') closeAIModal();
+  });
+}
+
+// ─── INERTIAL GRAVITY PHYSICS (10X CREATIVITY) ───
+const { Engine, Render, World, Bodies, Body, Composite, Runner } = Matter;
+
+const engine = Engine.create();
+engine.world.gravity.y = 0; // Default zero gravity
+
+const decorElements = document.querySelectorAll('.decor-item, .decor-text, .decor-snippet, .decor-binary, .decor-tag, .decor-arch');
+const physicsBodies = [];
+
+// Create physics bodies for each decoration
+decorElements.forEach((el) => {
+  const rect = el.getBoundingClientRect();
+  const x = rect.left + rect.width / 2;
+  const y = rect.top + rect.height / 2;
+  
+  // Make them circular for smoother sliding
+  const body = Bodies.circle(x, y, Math.max(rect.width, rect.height) / 2, {
+    friction: 0.05,
+    restitution: 0.6,
+    density: 0.001
+  });
+  
+  physicsBodies.push({ body, element: el });
+  World.add(engine.world, body);
+});
+
+// Add invisible boundaries
+const width = window.innerWidth;
+const height = window.innerHeight;
+const ground = Bodies.rectangle(width/2, height + 50, width, 100, { isStatic: true });
+const ceiling = Bodies.rectangle(width/2, -50, width, 100, { isStatic: true });
+const leftWall = Bodies.rectangle(-50, height/2, 100, height, { isStatic: true });
+const rightWall = Bodies.rectangle(width + 50, height/2, 100, height, { isStatic: true });
+World.add(engine.world, [ground, ceiling, leftWall, rightWall]);
+
+// Sync physics to DOM
+Runner.run(engine);
+(function update() {
+  physicsBodies.forEach(({ body, element }) => {
+    // Keep within viewport (teleport if they escape somehow)
+    if (body.position.x < -100) Body.setPosition(body, { x: width + 50, y: body.position.y });
+    if (body.position.x > width + 100) Body.setPosition(body, { x: -50, y: body.position.y });
+    if (body.position.y < -100) Body.setPosition(body, { x: body.position.x, y: height + 50 });
+    if (body.position.y > height + 100) Body.setPosition(body, { x: body.position.x, y: -50 });
+
+    element.style.transform = `translate3d(${body.position.x - (body.bounds.max.x - body.bounds.min.x)/2 - element.offsetLeft}px, ${body.position.y - (body.bounds.max.y - body.bounds.min.y)/2 - element.offsetTop}px, 0) rotate(${body.angle}rad)`;
+  });
+  requestAnimationFrame(update);
+})();
+
+// ─── SENSOR & INTERACTION SYNC ───
 if (window.DeviceOrientationEvent) {
   let lastOrientationTheme = savedTheme;
   let lastToggleTime = 0;
   const TILT_THRESHOLD = 40;
-  const BUFFER = 10; // Avoid flickering
+  const BUFFER = 10;
 
   window.addEventListener('deviceorientation', (event) => {
     const now = Date.now();
-    if (now - lastToggleTime < 500) return; // Sensitivity control: Wait 500ms between changes
+    const beta = event.beta;  
+    const gamma = event.gamma;
 
-    const tilt = event.beta; // Front-to-back tilt (-180 to 180)
-    if (tilt === null) return;
+    // 1. THEME TOGGLE LOGIC
+    if (now - lastToggleTime > 500) {
+      if (beta !== null) {
+        if (beta > (TILT_THRESHOLD + BUFFER) && lastOrientationTheme !== 'light') {
+          setTheme('light');
+          lastOrientationTheme = 'light';
+          lastToggleTime = now;
+        } else if (beta < (TILT_THRESHOLD - BUFFER) && lastOrientationTheme !== 'dark') {
+          setTheme('dark');
+          lastOrientationTheme = 'dark';
+          lastToggleTime = now;
+        }
+      }
+    }
 
-    // Logic: If tilted significantly (e.g., > 40 degrees towards user), go Light
-    // If returned to flatter position (< 30 degrees), go Dark
-    if (tilt > (TILT_THRESHOLD + BUFFER) && lastOrientationTheme !== 'light') {
-      setTheme('light');
-      lastOrientationTheme = 'light';
-      lastToggleTime = now;
-    } else if (tilt < (TILT_THRESHOLD - BUFFER) && lastOrientationTheme !== 'dark') {
-      setTheme('dark');
-      lastOrientationTheme = 'dark';
-      lastToggleTime = now;
+    // 2. GRAVITY PHYSICS
+    if (beta !== null && gamma !== null) {
+      engine.world.gravity.x = gamma / 45;
+      engine.world.gravity.y = (beta - 30) / 45; 
     }
   }, true);
 
-  // iOS Permission Handling (Required for modern Safari)
+  // iOS Permission Handling
   if (typeof DeviceOrientationEvent.requestPermission === 'function') {
     document.addEventListener('click', () => {
-      DeviceOrientationEvent.requestPermission()
-        .then(response => {
-          if (response === 'granted') console.log('Gravity sensing enabled.');
-        })
-        .catch(console.error);
+      DeviceOrientationEvent.requestPermission().catch(console.error);
     }, { once: true });
   }
+}
+
+// Cursor Push Force (Desktop)
+if (!isTouchDevice) {
+  document.addEventListener('mousemove', (e) => {
+    physicsBodies.forEach(({ body }) => {
+      const dist = Math.hypot(e.clientX - body.position.x, e.clientY - body.position.y);
+      if (dist < 150) {
+        const force = 0.005;
+        const angle = Math.atan2(body.position.y - e.clientY, body.position.x - e.clientX);
+        Body.applyForce(body, body.position, {
+          x: Math.cos(angle) * force,
+          y: Math.sin(angle) * force
+        });
+      }
+    });
+  });
+}
+
+// ─── MOBILE TOUCH FEEDBACK ───
+if (isTouchDevice) {
+  document.querySelectorAll('.btn-prestige, .btn-secondary, .prestige-panel').forEach(el => {
+    el.addEventListener('touchstart', () => {
+      el.style.transform = 'scale(0.96)';
+      el.style.filter = 'brightness(1.2)';
+    }, { passive: true });
+    el.addEventListener('touchend', () => {
+      el.style.transform = '';
+      el.style.filter = '';
+    }, { passive: true });
+  });
 }

@@ -110,6 +110,23 @@
   <!-- SCANLINE -->
   <div class="bg-scanline"></div>
 
+  <!-- AI COMMAND MODAL -->
+  <div id="ai-modal" class="ai-modal">
+    <div class="ai-modal-content">
+      <div class="ai-modal-header">
+        <div class="ai-status"><span></span>SYSTEM ACTIVE</div>
+        <button id="ai-close" class="ai-close">ESC</button>
+      </div>
+      <div class="ai-chat-history" id="ai-chat-history">
+        <div class="ai-msg bot">Hello! I'm Aryan's AI assistant. Ask me anything about his skills, projects, or experience.</div>
+      </div>
+      <div class="ai-input-wrap">
+        <input type="text" id="ai-input" placeholder="Type a command (e.g., 'projects', 'contact', 'wispa')..." autofocus>
+        <button id="ai-send">➔</button>
+      </div>
+    </div>
+  </div>
+
   <!-- HEADER -->
   <header class="site-header" id="site-header">
     <div class="header-inner">
@@ -812,6 +829,8 @@
   <!-- TOAST -->
   <div id="toast">Copied!</div>
 
+  <!-- SCRIPTS -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/matter-js/0.19.0/matter.min.js"></script>
   <script src="portfolio.js"></script>
 </body>
 
