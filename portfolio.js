@@ -165,7 +165,7 @@ if (!isTouchDevice) {
     }
   });
 
-  document.querySelectorAll('a, button, .info-card, .logo, .prestige-panel').forEach(el => {
+  document.querySelectorAll('a, button, .logo').forEach(el => {
     el.addEventListener('mouseenter', () => {
       const cursor = document.getElementById('custom-cursor');
       if (cursor) cursor.classList.add('expand');
@@ -375,7 +375,7 @@ if (window.DeviceOrientationEvent) {
 
 // ─── MOBILE TOUCH FEEDBACK ───
 if (isTouchDevice) {
-  document.querySelectorAll('.btn-prestige, .btn-secondary, .prestige-panel').forEach(el => {
+  document.querySelectorAll('.btn-prestige, .btn-secondary').forEach(el => {
     el.addEventListener('touchstart', () => {
       el.style.transform = 'scale(0.96)';
       el.style.filter = 'brightness(1.2)';
@@ -541,101 +541,4 @@ function updateClock() {
 setInterval(updateClock, 1000);
 updateClock(); // Initial call
 
-// ─── FULL BOX DETAIL SYSTEM ───
-const detailModal = document.getElementById('detail-modal');
-const detailClose = document.getElementById('detail-close');
-const detailContent = document.getElementById('detail-modal-content');
-const detailOverlay = document.querySelector('.detail-modal-overlay');
 
-function openDetail(panel) {
-  if (!detailModal || !detailContent) return;
-
-  const detailHero = document.getElementById('detail-hero-content');
-
-  // Extract content from panel
-  let title = panel.querySelector('h3')?.textContent || 'Detail View';
-  let subtitle = '';
-  
-  // Try to find the most relevant subtitle/meta info
-  const subSelectors = ['.exp-company', '.project-desc', '.ach-card-sub', '.cert-org', '.edu-school', '.about-sub'];
-  for (let selector of subSelectors) {
-    const el = panel.querySelector(selector);
-    if (el) {
-      subtitle = el.textContent;
-      break;
-    }
-  }
-
-  let bodyHTML = '';
-
-  // Handle different types of panels with specific extraction logic
-  if (panel.classList.contains('about-bio')) {
-    const clone = panel.cloneNode(true);
-    const cta = clone.querySelector('.about-cta-row');
-    if (cta) cta.remove();
-    bodyHTML = clone.innerHTML;
-  } else if (panel.querySelector('.exp-list')) {
-    bodyHTML = `<ul class="expanded-list">${panel.querySelector('.exp-list').innerHTML}</ul>`;
-  } else if (panel.querySelector('.project-stack')) {
-    bodyHTML = `<p class="expanded-body">${panel.querySelector('.project-desc').textContent}</p>`;
-    bodyHTML += `<div class="expanded-tags">${panel.querySelector('.project-stack').innerHTML}</div>`;
-  } else if (panel.classList.contains('skill-group')) {
-    bodyHTML = `<div class="expanded-tags">${panel.querySelector('.skill-tags').innerHTML}</div>`;
-  } else {
-    const p = panel.querySelector('p');
-    if (p) bodyHTML += `<p class="expanded-body">${p.textContent}</p>`;
-    const tags = panel.querySelector('.skill-tags, .exp-tags, .project-stack');
-    if (tags) bodyHTML += `<div class="expanded-tags">${tags.innerHTML}</div>`;
-  }
-
-  // Construct final modal HTML
-  if (detailHero) {
-    detailHero.innerHTML = `
-      <h2 class="expanded-title">${title}</h2>
-      ${subtitle ? `<p class="expanded-subtitle">${subtitle}</p>` : ''}
-    `;
-  }
-  detailContent.innerHTML = bodyHTML;
-
-  // Open modal with animation class
-  detailModal.classList.add('active');
-  document.body.classList.add('modal-active');
-  
-  // Custom event for AI assistant to notice
-  window.dispatchEvent(new CustomEvent('detailOpened', { detail: { title } }));
-}
-
-function closeDetail() {
-  if (detailModal) {
-    detailModal.classList.remove('active');
-    document.body.classList.remove('modal-active');
-  }
-}
-
-// Add click listeners to all prestige panels
-document.querySelectorAll('.prestige-panel').forEach(panel => {
-  panel.addEventListener('click', (e) => {
-    // Don't trigger if a link inside was clicked
-    if (e.target.closest('a')) return;
-    
-    // Set radial expansion origin via CSS variables
-    if (detailModal) {
-      const x = (e.clientX / window.innerWidth) * 100;
-      const y = (e.clientY / window.innerHeight) * 100;
-      detailModal.style.setProperty('--mx', `${x}%`);
-      detailModal.style.setProperty('--my', `${y}%`);
-    }
-    
-    openDetail(panel);
-  });
-});
-
-if (detailClose) detailClose.addEventListener('click', closeDetail);
-if (detailOverlay) detailOverlay.addEventListener('click', closeDetail);
-
-// Close on ESC
-document.addEventListener('keydown', (e) => {
-  if (e.key === 'Escape') {
-    closeDetail();
-  }
-});
