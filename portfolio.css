@@ -1824,24 +1824,6 @@ ul {
   text-align: center;
 }
 
-.footer-bar-top {
-  font-size: 0.72rem;
-  font-weight: 800;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: var(--text-muted);
-  padding: 0.45rem 1.1rem;
-  border: 1px solid var(--border);
-  border-radius: 100px;
-  transition: color 0.2s, border-color 0.2s, transform 0.2s;
-  white-space: nowrap;
-}
-
-.footer-bar-top:hover {
-  color: var(--text);
-  border-color: var(--text);
-  transform: translateY(-2px);
-}
 
 @media (max-width: 600px) {
   .footer-bar {
@@ -1852,9 +1834,6 @@ ul {
   .footer-bar-tag {
     text-align: left;
     display: none; /* hide on mobile to keep it clean */
-  }
-  .footer-bar-top {
-    align-self: flex-end;
   }
   .footer-bio {
     max-width: 100%;
