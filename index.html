@@ -34,22 +34,51 @@
 </head>
 
 <body>
-  <!-- PRELOADER -->
+  <!-- PRELOADER (BIOMETRIC DASHBOARD) -->
   <div id="preloader" class="preloader">
-    <div class="preloader-content">
-      <div class="terminal-header">
-        <div class="terminal-dots"><span></span><span></span><span></span></div>
-        <div class="terminal-title">system_init.sh</div>
+    <div class="preloader-dashboard">
+      <div class="dashboard-header">
+        <div class="header-status">
+          <span class="status-dot pulse"></span>
+          <span class="status-text">ENCRYPTED CONNECTION</span>
+        </div>
+        <div class="header-id">ID: 0x4A7-ARYAN</div>
       </div>
-      <div class="terminal-body" id="terminal-body">
-        <!-- Logs will be injected here -->
+      
+      <div class="dashboard-main">
+        <!-- Biometric Scanner -->
+        <div class="scanner-container">
+          <div class="biometric-scanner">
+            <div class="scanner-circle"></div>
+            <div class="scanner-circle"></div>
+            <div class="scanner-circle"></div>
+            <div class="scanner-line"></div>
+          </div>
+          <div class="scan-label">BIOMETRIC SCAN IN PROGRESS</div>
+        </div>
+
+        <!-- System Logs -->
+        <div class="terminal-logs">
+          <div class="terminal-header-mini">
+            <div class="terminal-dots-mini"><span></span><span></span><span></span></div>
+            <div class="terminal-title-mini">kernel_init.sys</div>
+          </div>
+          <div class="terminal-body" id="terminal-body">
+            <!-- Logs will be injected here -->
+          </div>
+        </div>
       </div>
-      <div class="preloader-progress-wrap">
-        <div class="preloader-progress-bar" id="preloader-bar"></div>
+
+      <div class="dashboard-footer">
+        <div class="auth-status" id="auth-status">AUTHORIZATION: PENDING</div>
+        <div class="preloader-progress-wrap">
+          <div class="preloader-progress-bar" id="preloader-bar"></div>
+        </div>
       </div>
     </div>
   </div>
 
+  <canvas id="bg-canvas" class="bg-canvas"></canvas>
   <div id="custom-cursor"></div>
   <div class="noise-overlay"></div>
   <div class="bg-blobs">
@@ -850,6 +879,20 @@
   <div id="toast">Copied!</div>
 
 
+
+  <!-- WISPA AI CO-PILOT -->
+  <div id="wispa-co-pilot" class="wispa-container">
+    <div class="wispa-message-wrap">
+      <div class="wispa-message" id="wispa-message">Initializing Wispa AI Co-Pilot...</div>
+    </div>
+    <div class="wispa-orb-wrap">
+      <div class="wispa-orb" id="wispa-orb">
+        <div class="orb-inner"></div>
+        <div class="orb-glow"></div>
+      </div>
+      <div class="wispa-badge">WISPA AI</div>
+    </div>
+  </div>
 
   <!-- MOBILE SECTION INDICATOR -->
   <div id="mobile-section-indicator" class="mobile-indicator">

@@ -87,6 +87,16 @@ body.theme-transitioning * {
   transition: all 0.8s cubic-bezier(0.15, 1, 0.3, 1) !important;
 }
 
+.bg-canvas {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -3; /* Behind everything */
+  pointer-events: none;
+  background: transparent;
+}
+
 /* ─── PREMIUM BACKGROUND ELEMENTS ─── */
 .bg-blobs {
   position: fixed;
@@ -2255,95 +2265,220 @@ ul {
 }
 
 
-/* ─── TERMINAL PRELOADER ─── */
+/* ─── BIOMETRIC DASHBOARD PRELOADER ─── */
 .preloader {
   position: fixed;
   inset: 0;
   z-index: 99999;
-  background: #050505;
+  background: #000;
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: opacity 0.8s ease, visibility 0.8s;
+  transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.8s;
+  padding: 2rem;
 }
 
 .preloader.fade-out {
   opacity: 0;
   visibility: hidden;
+  transform: scale(1.1);
 }
 
-.preloader-content {
-  width: 90%;
-  max-width: 500px;
-  background: #111;
+.preloader-dashboard {
+  width: 100%;
+  max-width: 800px;
+  background: rgba(20, 20, 20, 0.6);
+  backdrop-filter: blur(40px);
   border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 24px;
+  overflow: hidden;
+  box-shadow: 0 100px 200px rgba(0, 0, 0, 0.8), inset 0 1px 1px rgba(255, 255, 255, 0.1);
+  display: flex;
+  flex-direction: column;
+}
+
+.dashboard-header {
+  padding: 1.5rem 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  font-family: monospace;
+  font-size: 0.7rem;
+  letter-spacing: 0.1em;
+  color: #888;
+}
+
+.header-status {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+}
+
+.status-dot {
+  width: 8px;
+  height: 8px;
+  background: #4ade80;
+  border-radius: 50%;
+  box-shadow: 0 0 10px #4ade80;
+}
+
+.status-dot.pulse {
+  animation: pulse-dot 2s infinite;
+}
+
+.dashboard-main {
+  display: grid;
+  grid-template-columns: 1fr 1.5fr;
+  gap: 2rem;
+  padding: 3rem;
+}
+
+@media (max-width: 768px) {
+  .dashboard-main {
+    grid-template-columns: 1fr;
+    padding: 2rem;
+  }
+}
+
+/* Biometric Scanner */
+.scanner-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2rem;
+}
+
+.biometric-scanner {
+  position: relative;
+  width: 180px;
+  height: 180px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.scanner-circle {
+  position: absolute;
+  border: 2px solid rgba(74, 222, 128, 0.2);
+  border-radius: 50%;
+  animation: scanner-pulse 3s infinite;
+}
+
+.scanner-circle:nth-child(1) { width: 100%; height: 100%; animation-delay: 0s; }
+.scanner-circle:nth-child(2) { width: 70%; height: 70%; animation-delay: 0.5s; }
+.scanner-circle:nth-child(3) { width: 40%; height: 40%; animation-delay: 1s; }
+
+.scanner-line {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 4px;
+  background: linear-gradient(90deg, transparent, #4ade80, transparent);
+  box-shadow: 0 0 20px #4ade80;
+  animation: scanner-move 2.5s infinite ease-in-out;
+  z-index: 2;
+}
+
+.scan-label {
+  font-family: monospace;
+  font-size: 0.65rem;
+  color: #4ade80;
+  letter-spacing: 0.2em;
+  text-align: center;
+}
+
+/* Terminal Logs */
+.terminal-logs {
+  background: rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.05);
   border-radius: 12px;
   overflow: hidden;
-  box-shadow: 0 50px 100px rgba(0, 0, 0, 0.5);
+  display: flex;
+  flex-direction: column;
 }
 
-.terminal-header {
-  background: #1a1a1a;
-  padding: 0.75rem 1rem;
+.terminal-header-mini {
+  background: rgba(255, 255, 255, 0.03);
+  padding: 0.8rem 1.2rem;
   display: flex;
   align-items: center;
   gap: 1rem;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
 }
 
-.terminal-dots {
-  display: flex;
-  gap: 6px;
-}
+.terminal-dots-mini { display: flex; gap: 5px; }
+.terminal-dots-mini span { width: 6px; height: 6px; border-radius: 50%; background: #333; }
+.terminal-dots-mini span:nth-child(1) { background: #ff5f56; }
+.terminal-dots-mini span:nth-child(2) { background: #ffbd2e; }
+.terminal-dots-mini span:nth-child(3) { background: #27c93f; }
 
-.terminal-dots span {
-  width: 10px;
-  height: 10px;
-  border-radius: 50%;
-  background: #333;
-}
-
-.terminal-dots span:nth-child(1) { background: #ff5f56; }
-.terminal-dots span:nth-child(2) { background: #ffbd2e; }
-.terminal-dots span:nth-child(3) { background: #27c93f; }
-
-.terminal-title {
-  font-family: monospace;
-  font-size: 0.7rem;
-  color: #666;
-  text-transform: lowercase;
-}
+.terminal-title-mini { font-family: monospace; font-size: 0.6rem; color: #555; }
 
 .terminal-body {
   padding: 1.5rem;
   font-family: 'Courier New', Courier, monospace;
-  font-size: 0.85rem;
-  min-height: 200px;
+  font-size: 0.75rem;
+  color: #aaa;
+  min-height: 220px;
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
+  gap: 0.4rem;
 }
 
-.terminal-line {
-  opacity: 0;
-  animation: fadeIn 0.2s forwards;
+.terminal-line { animation: fadeIn 0.3s forwards; }
+.terminal-line.cmd { color: #fff; opacity: 0.9; }
+.terminal-line.success { color: #4ade80; }
+
+/* Dashboard Footer */
+.dashboard-footer {
+  padding: 2rem 3rem;
+  background: rgba(255, 255, 255, 0.02);
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
 }
 
-.terminal-line.cmd { color: #fff; font-weight: bold; }
-.terminal-line.info { color: #888; }
-.terminal-line.success { color: #27c93f; }
+.auth-status {
+  font-family: monospace;
+  font-size: 0.75rem;
+  font-weight: 900;
+  color: #fff;
+  margin-bottom: 1rem;
+  letter-spacing: 0.3em;
+}
 
 .preloader-progress-wrap {
-  height: 2px;
+  height: 4px;
   width: 100%;
   background: rgba(255, 255, 255, 0.05);
+  border-radius: 10px;
+  overflow: hidden;
 }
 
 .preloader-progress-bar {
   height: 100%;
   width: 0%;
-  background: #fff;
-  transition: width 0.3s ease;
+  background: linear-gradient(90deg, #4ade80, #2dd4bf);
+  box-shadow: 0 0 15px rgba(74, 222, 128, 0.5);
+  transition: width 0.4s ease;
+}
+
+/* Animations */
+@keyframes scanner-pulse {
+  0% { transform: scale(1); opacity: 0.2; }
+  50% { transform: scale(1.05); opacity: 0.5; border-color: rgba(74, 222, 128, 0.5); }
+  100% { transform: scale(1); opacity: 0.2; }
+}
+
+@keyframes scanner-move {
+  0% { top: 0; }
+  50% { top: 100%; }
+  100% { top: 0; }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(5px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
 html.loading, 

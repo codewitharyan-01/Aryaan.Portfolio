@@ -387,23 +387,24 @@ if (isTouchDevice) {
   });
 }
 
-// ─── PRELOADER (CODING STYLE) ───
+// ─── PRELOADER (BIOMETRIC DASHBOARD) ───
 (function() {
   const terminal = document.getElementById('terminal-body');
   const preloader = document.getElementById('preloader');
   const bar = document.getElementById('preloader-bar');
+  const authStatus = document.getElementById('auth-status');
   
   if (!terminal) return;
 
   const logs = [
-    { text: '> sudo init --identity "Aryan Patel"', type: 'cmd' },
-    { text: '[OK] Fetching project_data.json...', type: 'info' },
-    { text: '[OK] Initializing 15+ active repositories...', type: 'info' },
-    { text: '[OK] Injecting AI Prompt Engineering modules...', type: 'info' },
-    { text: '[OK] Loading SSIP Phase 1 (Wispa AI)...', type: 'info' },
-    { text: '[OK] Compiling University Rank 1 algorithms...', type: 'success' },
+    { text: '> Initializing biometric handshake...', type: 'cmd' },
+    { text: '[OK] Establishing encrypted tunnel...', type: 'info' },
+    { text: '[OK] Scanning retinal patterns...', type: 'info' },
+    { text: '> Checking database for ID: 0x4A7...', type: 'cmd' },
+    { text: '[OK] Identity confirmed: Aryan Patel', type: 'success' },
+    { text: '[OK] Decrypting portfolio assets...', type: 'info' },
     { text: '> npm run start --prestige-mode', type: 'cmd' },
-    { text: 'BUILD SUCCESSFUL. REVEALING PORTFOLIO...', type: 'success' }
+    { text: 'SYSTEM READY. AUTHORIZATION GRANTED.', type: 'success' }
   ];
 
   let logIndex = 0;
@@ -417,8 +418,15 @@ if (isTouchDevice) {
       logIndex++;
       const progress = (logIndex / logs.length) * 100;
       if (bar) bar.style.width = `${progress}%`;
+
+      // Update Auth Status at the end
+      if (logIndex === logs.length && authStatus) {
+        authStatus.textContent = 'AUTHORIZATION: GRANTED';
+        authStatus.style.color = '#4ade80';
+        authStatus.style.textShadow = '0 0 15px rgba(74, 222, 128, 0.5)';
+      }
       
-      setTimeout(addLog, Math.random() * 300 + 150);
+      setTimeout(addLog, Math.random() * 400 + 200);
     } else {
       // Done - Fade out
       setTimeout(() => {
@@ -426,13 +434,13 @@ if (isTouchDevice) {
         document.documentElement.classList.remove('loading');
         document.body.classList.remove('loading');
         setTimeout(() => { if (preloader) preloader.style.display = 'none'; }, 800);
-      }, 600);
+      }, 1200);
     }
   }
 
   document.documentElement.classList.add('loading');
   document.body.classList.add('loading');
-  setTimeout(addLog, 500);
+  setTimeout(addLog, 800);
 })();
 
 // ─── SECURITY & PERFORMANCE ───
@@ -541,4 +549,126 @@ function updateClock() {
 setInterval(updateClock, 1000);
 updateClock(); // Initial call
 
+// ─── INTERACTIVE NEURAL NETWORK BACKGROUND ───
+(function() {
+  const canvas = document.getElementById('bg-canvas');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  
+  let particles = [];
+  const particleCount = isTouchDevice ? 40 : 100;
+  const connectionDistance = 150;
+  const mouseThreshold = 200;
+  
+  let mouse = { x: null, y: null };
+  
+  window.addEventListener('mousemove', (e) => {
+    mouse.x = e.clientX;
+    mouse.y = e.clientY;
+  });
 
+  window.addEventListener('resize', init);
+  
+  class Particle {
+    constructor() {
+      this.init();
+    }
+    
+    init() {
+      this.x = Math.random() * canvas.width;
+      this.y = Math.random() * canvas.height;
+      this.vx = (Math.random() - 0.5) * 0.5;
+      this.vy = (Math.random() - 0.5) * 0.5;
+      this.size = Math.random() * 2 + 1;
+    }
+    
+    update() {
+      this.x += this.vx;
+      this.y += this.vy;
+      
+      // Bounce off walls
+      if (this.x < 0 || this.x > canvas.width) this.vx *= -1;
+      if (this.y < 0 || this.y > canvas.height) this.vy *= -1;
+      
+      // Mouse interaction
+      if (mouse.x !== null) {
+        const dx = this.x - mouse.x;
+        const dy = this.y - mouse.y;
+        const dist = Math.hypot(dx, dy);
+        
+        if (dist < mouseThreshold) {
+          const force = (mouseThreshold - dist) / mouseThreshold;
+          this.vx += (dx / dist) * force * 0.02;
+          this.vy += (dy / dist) * force * 0.02;
+        }
+      }
+
+      // Max velocity
+      const maxSpeed = 1.5;
+      const speed = Math.hypot(this.vx, this.vy);
+      if (speed > maxSpeed) {
+        this.vx = (this.vx / speed) * maxSpeed;
+        this.vy = (this.vy / speed) * maxSpeed;
+      }
+    }
+    
+    draw() {
+      const currentTheme = document.documentElement.getAttribute('data-theme');
+      ctx.fillStyle = currentTheme === 'light' ? 'rgba(0, 0, 0, 0.1)' : 'rgba(255, 255, 255, 0.1)';
+      ctx.beginPath();
+      ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+      ctx.fill();
+    }
+  }
+  
+  function init() {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+    particles = [];
+    for (let i = 0; i < particleCount; i++) {
+      particles.push(new Particle());
+    }
+  }
+  
+  function animate() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    
+    const currentTheme = document.documentElement.getAttribute('data-theme');
+    const color = currentTheme === 'light' ? '0, 0, 0' : '255, 255, 255';
+    
+    for (let i = 0; i < particles.length; i++) {
+      particles[i].update();
+      particles[i].draw();
+      
+      for (let j = i + 1; j < particles.length; j++) {
+        const dx = particles[i].x - particles[j].x;
+        const dy = particles[i].y - particles[j].y;
+        const dist = Math.hypot(dx, dy);
+        
+        if (dist < connectionDistance) {
+          let opacity = 1 - (dist / connectionDistance);
+          
+          // Brighter near mouse
+          if (mouse.x !== null) {
+            const mDist1 = Math.hypot(particles[i].x - mouse.x, particles[i].y - mouse.y);
+            const mDist2 = Math.hypot(particles[j].x - mouse.x, particles[j].y - mouse.y);
+            if (mDist1 < mouseThreshold || mDist2 < mouseThreshold) {
+              opacity *= 1.5;
+            }
+          }
+          
+          ctx.strokeStyle = `rgba(${color}, ${opacity * 0.12})`;
+          ctx.lineWidth = 0.8;
+          ctx.beginPath();
+          ctx.moveTo(particles[i].x, particles[i].y);
+          ctx.lineTo(particles[j].x, particles[j].y);
+          ctx.stroke();
+        }
+      }
+    }
+    requestAnimationFrame(animate);
+  }
+  
+  init();
+  animate();
+})();
