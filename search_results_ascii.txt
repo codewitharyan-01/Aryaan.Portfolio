@@ -1,0 +1,35 @@
+
+portfolio.css:283:.gh-cell.active {
+portfolio.css:566:.hamburger.active span:nth-child(1) {
+portfolio.css:570:.hamburger.active span:nth-child(2) {
+portfolio.css:574:.hamburger.active span:nth-child(3) {
+portfolio.css:591:.mobile-overlay.active {
+portfolio.css:1907:  /* Restore cursor when modal is active */
+portfolio.css:1908:  body.modal-active { cursor: default; }
+portfolio.css:1909:  body.modal-active #custom-cursor { display: none !important; }
+portfolio.css:1910:  body.modal-active a, 
+portfolio.css:1911:  body.modal-active button,
+portfolio.css:1912:  body.modal-active input { cursor: pointer; }
+portfolio.css:1946:/* ??? ACTIVE NAV HIGHLIGHT ??? */
+portfolio.css:1947:.desktop-nav a.active {
+portfolio.css:1951:.desktop-nav a.active::after {
+portfolio.css:2461:.detail-modal.active {
+portfolio.css:2498:.detail-modal.active .detail-hero-pane {
+portfolio.css:2525:.detail-modal.active .detail-content-pane {
+portfolio.css:2561:.detail-modal.active .expanded-title { opacity: 1; transform: translateY(0); transition-delay: 
+0.4s; }
+portfolio.css:2562:.detail-modal.active .expanded-subtitle { opacity: 1; transform: translateY(0); transition-delay: 
+0.5s; }
+portfolio.css:2563:.detail-modal.active .detail-main-content > * { opacity: 1; transform: translateY(0); 
+transition-delay: 0.6s; }
+portfolio.css:2564:.detail-modal.active .detail-pane-footer { opacity: 1; transform: translateY(0); transition-delay: 
+0.7s; }
+portfolio.css:2566:/* Modal Active State for Body */
+portfolio.css:2567:body.modal-active {
+portfolio.css:2573:html.modal-active {
+portfolio.css:2598:  .detail-modal.active .detail-hero-pane,
+portfolio.css:2599:  .detail-modal.active .detail-content-pane {
+portfolio.css:2717:/* Modal Active State for Body */
+portfolio.css:2718:body.modal-active {
+
+

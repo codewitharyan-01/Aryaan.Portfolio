@@ -145,31 +145,6 @@
   <!-- SCANLINE -->
   <div class="bg-scanline"></div>
 
-  <!-- AI COMMAND MODAL -->
-  <div id="ai-modal" class="ai-modal">
-    <div class="ai-modal-content">
-      <div class="ai-modal-header">
-        <div class="ai-status"><span></span>SYSTEM ACTIVE</div>
-        <button id="ai-close" class="ai-close">ESC</button>
-      </div>
-      <div class="ai-chat-history" id="ai-chat-history">
-        <div class="ai-msg bot">Hello! I'm Aryan's AI assistant. Ask me anything about his skills, projects, or experience.</div>
-      </div>
-      <div class="ai-input-wrap">
-        <input type="text" id="ai-input" placeholder="Type a command (e.g., 'projects', 'contact', 'wispa')..." autofocus>
-        <button id="ai-send">➔</button>
-      </div>
-      <div class="ai-suggestions">
-        <span class="suggestion-tag" data-cmd="Who is Aryan?">Who is Aryan?</span>
-        <span class="suggestion-tag" data-cmd="What is Wispa AI?">What is Wispa AI?</span>
-        <span class="suggestion-tag" data-cmd="What is your Tech Stack?">What is your Tech Stack?</span>
-        <span class="suggestion-tag" data-cmd="Tell me about your Rank 1.">Tell me about your Rank 1.</span>
-        <span class="suggestion-tag" data-cmd="How can I contact you?">How can I contact you?</span>
-        <span class="suggestion-tag" data-cmd="Show me your projects.">Show me your projects.</span>
-        <span class="suggestion-tag" data-cmd="Have you won any awards?">Have you won any awards?</span>
-      </div>
-    </div>
-  </div>
 
   <!-- HEADER -->
   <header class="site-header" id="site-header">
@@ -874,6 +849,50 @@
 
   <!-- TOAST -->
   <div id="toast">Copied!</div>
+
+  <!-- DETAIL MODAL (FULL SCREEN SPLIT SYSTEM) -->
+  <div id="detail-modal" class="detail-modal">
+    <div class="detail-modal-overlay"></div>
+    <div class="detail-modal-container">
+      
+      <!-- Left Hero Pane -->
+      <div class="detail-hero-pane">
+        <div class="detail-pane-bg"></div>
+        <div class="detail-hero-content" id="detail-hero-content">
+          <!-- Title/Subtitle injected here -->
+        </div>
+      </div>
+
+      <!-- Right Content Pane -->
+      <div class="detail-content-pane">
+        <div class="detail-pane-header">
+          <div class="detail-modal-status">
+            <span class="status-dot"></span>
+            <span class="status-text">DEEP DIVE</span>
+          </div>
+          <button id="detail-close" class="detail-close-btn" aria-label="Close Detail">
+            <span class="close-text">CLOSE</span>
+            <span class="close-icon">×</span>
+          </button>
+        </div>
+        <div class="detail-main-content" id="detail-modal-content">
+          <!-- Body injected here -->
+        </div>
+        <div class="detail-pane-footer">
+          <div class="detail-footer-info">Aryan Patel Portfolio · High-Fidelity Engineering</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- MOBILE SECTION INDICATOR -->
+  <div id="mobile-section-indicator" class="mobile-indicator">
+    <div class="indicator-track">
+      <span class="indicator-dot"></span>
+      <span class="indicator-text"></span>
+    </div>
+  </div>
 
   <script src="portfolio.js"></script>
 </body>
