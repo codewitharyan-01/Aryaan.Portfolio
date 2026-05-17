@@ -196,50 +196,57 @@ const sectionNames = {
 };
 
 let lastActiveSection = '';
+let isScrolling = false;
 
 window.addEventListener('scroll', () => {
-  // Progress bar logic
-  const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
-  const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
-  const scrolled = (winScroll / height) * 100;
-  if (progressBar) progressBar.style.width = scrolled + "%";
+  if (!isScrolling) {
+    requestAnimationFrame(() => {
+      // Progress bar logic (GPU accelerated)
+      const winScroll = window.scrollY || document.documentElement.scrollTop;
+      const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+      const progress = height > 0 ? Math.min(1, Math.max(0, winScroll / height)) : 0;
+      if (progressBar) progressBar.style.transform = `scaleX(${progress})`;
 
-  // Active section logic
-  let current = "";
-  sections.forEach((section) => {
-    const sectionTop = section.offsetTop;
-    const sectionHeight = section.clientHeight;
-    if (pageYOffset >= sectionTop - 200) {
-      current = section.getAttribute("id");
-    }
-  });
+      // Active section logic
+      let current = "";
+      sections.forEach((section) => {
+        const sectionTop = section.offsetTop;
+        if (window.pageYOffset >= sectionTop - 200) {
+          current = section.getAttribute("id");
+        }
+      });
 
-  navLinks.forEach((link) => {
-    link.classList.remove("active");
-    if (link.getAttribute("href") && link.getAttribute("href").includes(current)) {
-      link.classList.add("active");
-    }
-  });
+      navLinks.forEach((link) => {
+        link.classList.remove("active");
+        if (link.getAttribute("href") && link.getAttribute("href").includes(current)) {
+          link.classList.add("active");
+        }
+      });
 
-  // Mobile Indicator Logic
-  if (mobileIndicator && isTouchDevice) {
-    if (winScroll > 150) {
-      mobileIndicator.classList.add('active');
-      
-      if (current && current !== lastActiveSection) {
-        lastActiveSection = current;
-        const name = sectionNames[current] || current;
-        
-        // Text change animation
-        indicatorText.classList.add('changing');
-        setTimeout(() => {
-          indicatorText.textContent = name;
-          indicatorText.classList.remove('changing');
-        }, 300);
+      // Mobile Indicator Logic
+      if (mobileIndicator && isTouchDevice) {
+        if (winScroll > 150) {
+          mobileIndicator.classList.add('active');
+          
+          if (current && current !== lastActiveSection) {
+            lastActiveSection = current;
+            const name = sectionNames[current] || current;
+            
+            // Text change animation
+            indicatorText.classList.add('changing');
+            setTimeout(() => {
+              indicatorText.textContent = name;
+              indicatorText.classList.remove('changing');
+            }, 300);
+          }
+        } else {
+          mobileIndicator.classList.remove('active');
+        }
       }
-    } else {
-      mobileIndicator.classList.remove('active');
-    }
+
+      isScrolling = false;
+    });
+    isScrolling = true;
   }
 }, { passive: true });
 

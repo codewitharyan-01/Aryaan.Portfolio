@@ -656,7 +656,9 @@ ul {
 }
 
 .hero-badge {
-  display: inline-block;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
   font-size: 0.78rem;
   font-weight: 700;
   letter-spacing: 0.1em;
@@ -666,6 +668,23 @@ ul {
   border-radius: 100px;
   padding: 0.5rem 1.5rem;
   margin-bottom: 2rem;
+}
+
+.status-dot-red {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #ef4444;
+  box-shadow: 0 0 12px #ef4444;
+}
+
+.status-dot-red.blink-slow {
+  animation: blink-fade-slow 3s infinite ease-in-out;
+}
+
+@keyframes blink-fade-slow {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.2; transform: scale(0.85); }
 }
 
 .hero-title {
@@ -783,39 +802,6 @@ ul {
   }
 }
 
-/* Per-letter hover pop on the final name */
-.name-final .hero-title span,
-.hero-title .name-final span {
-  display: inline-block;
-  transition: transform 0.3s cubic-bezier(0.2, 1, 0.3, 1), color 0.3s, text-shadow 0.3s;
-  will-change: transform;
-}
-
-.hero-title .name-final span:hover {
-  transform: translateY(-22px) rotateX(25deg) scale(1.15);
-  color: #4ade80;
-  text-shadow: 0 0 30px rgba(74, 222, 128, 0.5), 0 10px 20px rgba(0,0,0,0.2);
-  z-index: 10;
-}
-
-/* ─── CREATIVE UNDERLINE ─── */
-.name-wrapper::after {
-  content: '';
-  position: absolute;
-  bottom: -10px;
-  left: 0;
-  width: 100%;
-  height: 4px;
-  background: linear-gradient(90deg, transparent, var(--text), transparent);
-  border-radius: 2px;
-  transform: scaleX(0);
-  transition: transform 0.6s cubic-bezier(0.2, 1, 0.3, 1);
-  transform-origin: center;
-}
-
-.hero-title:hover .name-wrapper::after {
-  transform: scaleX(0.8);
-}
 
 @keyframes pulse {
   0%,  100% {
@@ -1919,10 +1905,14 @@ ul {
 }
 
 #scroll-progress-bar {
-  width: 0%;
+  width: 100%;
   height: 100%;
   background: var(--text);
-  transition: width 0.1s linear;
+  box-shadow: 0 0 10px rgba(255, 255, 255, 0.6);
+  transform-origin: 0% 50%;
+  transform: scaleX(0);
+  will-change: transform;
+  transition: transform 0.25s cubic-bezier(0.1, 0.9, 0.2, 1);
 }
 
 /* ─── ACTIVE NAV HIGHLIGHT ─── */
@@ -1930,10 +1920,6 @@ ul {
   color: var(--text);
 }
 
-.desktop-nav a.active::after {
-  width: 100%;
-  opacity: 1;
-}
 
 /* ─── TOAST ─── */
 #toast {
@@ -2041,16 +2027,6 @@ ul {
     transform: rotate(15deg);
   }
 
-  .hero-title span:hover {
-    transform: translateY(-25px) rotateX(25deg) scale(1.1);
-    color: var(--text);
-    z-index: 10;
-    text-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
-  }
-
-  .hero-title:hover .name-wrapper::after {
-    transform: scaleX(0.8);
-  }
 
   .prestige-panel:hover {
     transform: translateY(-20px) rotateX(2deg) rotateY(2deg);
