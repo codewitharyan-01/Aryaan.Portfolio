@@ -31,7 +31,6 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="portfolio.css" />
-  <link rel="stylesheet" href="cursor.css" />
 </head>
 
 <body>
@@ -46,14 +45,27 @@
         <div class="header-id">ID: 0x4A7-ARYAN</div>
       </div>
       
-      <!-- System Logs -->
-      <div class="terminal-logs" style="margin: 2rem 0;">
-        <div class="terminal-header-mini">
-          <div class="terminal-dots-mini"><span></span><span></span><span></span></div>
-          <div class="terminal-title-mini">kernel_init.sys</div>
+      <div class="dashboard-main">
+        <!-- Biometric Scanner -->
+        <div class="scanner-container">
+          <div class="biometric-scanner">
+            <div class="scanner-circle"></div>
+            <div class="scanner-circle"></div>
+            <div class="scanner-circle"></div>
+            <div class="scanner-line"></div>
+          </div>
+          <div class="scan-label">BIOMETRIC SCAN IN PROGRESS</div>
         </div>
-        <div class="terminal-body" id="terminal-body">
-          <!-- Logs will be injected here -->
+
+        <!-- System Logs -->
+        <div class="terminal-logs">
+          <div class="terminal-header-mini">
+            <div class="terminal-dots-mini"><span></span><span></span><span></span></div>
+            <div class="terminal-title-mini">kernel_init.sys</div>
+          </div>
+          <div class="terminal-body" id="terminal-body">
+            <!-- Logs will be injected here -->
+          </div>
         </div>
       </div>
 
@@ -68,19 +80,6 @@
 
   <canvas id="bg-canvas" class="bg-canvas"></canvas>
   <div id="custom-cursor"></div>
-  
-  <!-- SECURITY SHIELD FOR PRIVACY PROTECTION -->
-  <div id="security-shield" class="security-shield">
-    <div class="shield-container">
-      <div class="shield-glow"></div>
-      <svg class="shield-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
-      </svg>
-      <h2 class="shield-title">SECURITY SHIELD ACTIVE</h2>
-      <p class="shield-desc">Capturing & Screen Recording Protection Enabled</p>
-    </div>
-  </div>
-
   <div class="noise-overlay"></div>
   <div class="bg-blobs">
     <div class="blob"></div>

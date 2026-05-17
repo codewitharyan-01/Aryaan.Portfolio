@@ -95,34 +95,9 @@ p {
   line-height: 1.7;
 }
 
-/* Smooth, highly-optimized theme transitions targeting only style properties that change colors/borders, avoiding layout thrashing */
-body {
-  transition: background-color 0.8s cubic-bezier(0.16, 1, 0.3, 1), 
-              color 0.8s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-.prestige-panel, 
-.site-header, 
-.btn-prestige, 
-.btn-secondary, 
-.mobile-overlay, 
-.terminal-body,
-.about-bio,
-.skill-group,
-.timeline-content,
-.project-card,
-.ach-card,
-.cert-card,
-.edu-item,
-.contact-panel,
-.toast,
-.dashboard-header,
-.terminal-logs,
-.dashboard-footer {
-  transition: background-color 0.8s cubic-bezier(0.16, 1, 0.3, 1), 
-              color 0.8s cubic-bezier(0.16, 1, 0.3, 1), 
-              border-color 0.8s cubic-bezier(0.16, 1, 0.3, 1), 
-              box-shadow 0.8s cubic-bezier(0.16, 1, 0.3, 1) !important;
+body.theme-transitioning,
+body.theme-transitioning * {
+  transition: all 0.8s cubic-bezier(0.15, 1, 0.3, 1) !important;
 }
 
 .bg-canvas {
@@ -3183,86 +3158,43 @@ ul {
   position: fixed;
   inset: 0;
   z-index: 99999;
-  background: radial-gradient(at 0% 0%, rgba(13, 17, 28, 0.92) 0px, transparent 50%),
-              radial-gradient(at 100% 0%, rgba(45, 212, 191, 0.18) 0px, transparent 50%),
-              radial-gradient(at 100% 100%, rgba(168, 85, 247, 0.12) 0px, transparent 50%),
-              radial-gradient(at 0% 100%, rgba(74, 222, 128, 0.12) 0px, transparent 50%),
-              #070a13;
-  backdrop-filter: blur(40px) saturate(200%);
-  -webkit-backdrop-filter: blur(40px) saturate(200%);
+  background: #000;
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: opacity 1.2s cubic-bezier(0.16, 1, 0.3, 1), 
-              backdrop-filter 1.2s cubic-bezier(0.16, 1, 0.3, 1), 
-              visibility 1.2s, 
-              transform 1.2s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.8s;
   padding: 2rem;
-  overflow: hidden;
 }
 
 .preloader.fade-out {
   opacity: 0;
   visibility: hidden;
-  backdrop-filter: blur(0px) saturate(100%);
-  -webkit-backdrop-filter: blur(0px) saturate(100%);
-  transform: scale(1.04);
-}
-
-/* Luxury Blueprint Dot Grid Background */
-.preloader::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background-image: radial-gradient(rgba(255, 255, 255, 0.015) 1px, transparent 1px);
-  background-size: 28px 28px;
-  opacity: 0.7;
-  z-index: 1;
-}
-
-/* Shifting Soft Neon Liquid Glass Ambient Blobs */
-.preloader::after {
-  content: '';
-  position: absolute;
-  width: min(550px, 85vw);
-  height: min(550px, 85vw);
-  background: radial-gradient(circle, rgba(45, 212, 191, 0.08) 0%, rgba(168, 85, 247, 0.04) 40%, rgba(74, 222, 128, 0.03) 60%, transparent 80%);
-  top: 45%;
-  left: 45%;
-  transform: translate(-50%, -50%);
-  filter: blur(75px);
-  z-index: 0;
-  animation: preloader-liquid-drift 10s ease-in-out infinite alternate;
-}
-
-@keyframes preloader-liquid-drift {
-  0% { transform: translate(-50%, -50%) scale(1) rotate(0deg); border-radius: 40% 60% 70% 30% / 40% 50% 60% 50%; }
-  100% { transform: translate(-45%, -55%) scale(1.2) rotate(60deg); border-radius: 60% 40% 30% 70% / 50% 60% 40% 60%; }
+  transform: scale(1.1);
 }
 
 .preloader-dashboard {
   width: 100%;
-  max-width: 550px;
-  background: transparent;
-  border: none;
+  max-width: 800px;
+  background: rgba(20, 20, 20, 0.6);
+  backdrop-filter: blur(40px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 24px;
-  overflow: visible;
+  overflow: hidden;
+  box-shadow: 0 100px 200px rgba(0, 0, 0, 0.8), inset 0 1px 1px rgba(255, 255, 255, 0.1);
   display: flex;
   flex-direction: column;
-  z-index: 2;
-  position: relative;
 }
 
 .dashboard-header {
-  padding: 1.5rem 0;
+  padding: 1.5rem 2rem;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
   font-family: monospace;
   font-size: 0.7rem;
   letter-spacing: 0.1em;
-  color: rgba(255, 255, 255, 0.45);
+  color: #888;
 }
 
 .header-status {
@@ -3272,34 +3204,28 @@ ul {
 }
 
 .status-dot {
-  width: 6px;
-  height: 6px;
+  width: 8px;
+  height: 8px;
   background: #4ade80;
   border-radius: 50%;
   box-shadow: 0 0 10px #4ade80;
 }
 
 .status-dot.pulse {
-  animation: pulse-dot-loader 2s infinite;
-}
-
-@keyframes pulse-dot-loader {
-  0%, 100% { transform: scale(1); opacity: 0.4; }
-  50% { transform: scale(1.3); opacity: 1; }
+  animation: pulse-dot 2s infinite;
 }
 
 .dashboard-main {
   display: grid;
-  grid-template-columns: 1fr 1.35fr;
-  gap: 3rem;
-  padding: 3rem 0;
+  grid-template-columns: 1fr 1.5fr;
+  gap: 2rem;
+  padding: 3rem;
 }
 
 @media (max-width: 768px) {
   .dashboard-main {
     grid-template-columns: 1fr;
-    gap: 2rem;
-    padding: 2rem 0;
+    padding: 2rem;
   }
 }
 
@@ -3325,48 +3251,25 @@ ul {
   position: absolute;
   border: 2px solid rgba(74, 222, 128, 0.2);
   border-radius: 50%;
-  transition: border-color 0.3s;
+  animation: scanner-pulse 3s infinite;
 }
 
 .scanner-circle:nth-child(1) {
   width: 100%;
   height: 100%;
-  border-style: dashed;
-  animation: scanner-rotate-cw 12s linear infinite, scanner-pulse 3s infinite;
   animation-delay: 0s;
 }
 
 .scanner-circle:nth-child(2) {
-  width: 75%;
-  height: 75%;
-  border-style: dotted;
-  animation: scanner-rotate-ccw 9s linear infinite, scanner-pulse 3s infinite;
+  width: 70%;
+  height: 70%;
   animation-delay: 0.5s;
 }
 
 .scanner-circle:nth-child(3) {
-  width: 48%;
-  height: 48%;
-  border-style: solid;
-  border-width: 1px;
-  animation: scanner-pulse 2s infinite ease-in-out;
+  width: 40%;
+  height: 40%;
   animation-delay: 1s;
-}
-
-.scanner-icon {
-  position: absolute;
-  z-index: 1;
-  color: #4ade80;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  animation: scanner-icon-breathe 3s ease-in-out infinite;
-}
-
-.scanner-icon svg {
-  width: 42px;
-  height: 42px;
-  filter: drop-shadow(0 0 10px rgba(74, 222, 128, 0.5));
 }
 
 .scanner-line {
@@ -3381,83 +3284,30 @@ ul {
   z-index: 2;
 }
 
-.scan-metadata {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-  font-family: 'Courier New', Courier, monospace;
-  font-size: 0.6rem;
-  color: rgba(255, 255, 255, 0.3);
-  letter-spacing: 0.05em;
-  margin-top: -0.5rem;
-}
-
-.scan-binary {
-  color: rgba(45, 212, 191, 0.45);
-  animation: binary-glow 1.5s infinite ease-in-out alternate;
-}
-
-.scan-morse {
-  color: rgba(74, 222, 128, 0.6);
-  font-weight: 800;
-  animation: morse-pulse 2s infinite ease-in-out;
-}
-
 .scan-label {
   font-family: monospace;
   font-size: 0.65rem;
   color: #4ade80;
   letter-spacing: 0.2em;
-  text-shadow: 0 0 8px rgba(74, 222, 128, 0.3);
   text-align: center;
-}
-
-/* Upgraded Preloader Keyframes */
-@keyframes scanner-rotate-cw {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
-}
-
-@keyframes scanner-rotate-ccw {
-  0% { transform: rotate(360deg); }
-  100% { transform: rotate(0deg); }
-}
-
-@keyframes scanner-icon-breathe {
-  0%, 100% { transform: scale(1); opacity: 0.5; }
-  50% { transform: scale(1.1); opacity: 0.9; }
-}
-
-@keyframes binary-glow {
-  0% { opacity: 0.25; text-shadow: none; }
-  100% { opacity: 0.75; text-shadow: 0 0 5px rgba(45, 212, 191, 0.5); }
-}
-
-@keyframes morse-pulse {
-  0%, 100% { opacity: 0.3; }
-  50% { opacity: 0.95; text-shadow: 0 0 8px rgba(74, 222, 128, 0.6); }
 }
 
 /* Terminal Logs */
 .terminal-logs {
-  background: rgba(255, 255, 255, 0.01);
-  border: 1px solid rgba(255, 255, 255, 0.04);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border-radius: 16px;
+  background: rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 12px;
   overflow: hidden;
   display: flex;
   flex-direction: column;
-  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.25);
 }
 
 .terminal-header-mini {
-  background: rgba(255, 255, 255, 0.02);
+  background: rgba(255, 255, 255, 0.03);
   padding: 0.8rem 1.2rem;
   display: flex;
   align-items: center;
   gap: 1rem;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.03);
 }
 
 .terminal-dots-mini {
@@ -3516,9 +3366,9 @@ ul {
 
 /* Dashboard Footer */
 .dashboard-footer {
-  padding: 1.5rem 0;
-  background: transparent;
-  border-top: 1px solid rgba(255, 255, 255, 0.03);
+  padding: 2rem 3rem;
+  background: rgba(255, 255, 255, 0.02);
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
 }
 
 .auth-status {
@@ -3531,41 +3381,19 @@ ul {
 }
 
 .preloader-progress-wrap {
-  height: 2px;
+  height: 4px;
   width: 100%;
-  background: transparent;
-  border-bottom: 1px dashed rgba(255, 255, 255, 0.12);
-  position: relative;
-  overflow: visible;
-  margin-top: 1.5rem;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 10px;
+  overflow: hidden;
 }
 
 .preloader-progress-bar {
-  height: 2px;
+  height: 100%;
   width: 0%;
-  background: linear-gradient(90deg, transparent, rgba(74, 222, 128, 0.25));
-  position: relative;
-  transition: width 1.6s cubic-bezier(0.22, 1, 0.36, 1);
-}
-
-.preloader-progress-bar::after {
-  content: '';
-  position: absolute;
-  right: -12px;
-  top: 50%;
-  transform: translateY(-50%) rotate(90deg);
-  width: 22px;
-  height: 22px;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%234ade80'%3E%3Cpath d='M21 16v-2l-8-5V3.5c0-.83-.67-1.5-1.5-1.5S10 2.67 10 3.5V9l-8 5v2l8-2.5V19l-2 1.5V22l3.5-1 3.5 1v-1.5L14 19v-5.5l8 2.5z'/%3E%3C/svg%3E");
-  background-size: contain;
-  background-repeat: no-repeat;
-  filter: drop-shadow(0 0 8px rgba(74, 222, 128, 0.8));
-  animation: airplane-wiggle 1s ease-in-out infinite alternate;
-}
-
-@keyframes airplane-wiggle {
-  0% { transform: translateY(-50%) rotate(90deg) translateY(-1px); }
-  100% { transform: translateY(-50%) rotate(90deg) translateY(1px); }
+  background: linear-gradient(90deg, #4ade80, #2dd4bf);
+  box-shadow: 0 0 15px rgba(74, 222, 128, 0.5);
+  transition: width 0.4s ease;
 }
 
 /* Animations */
@@ -3791,206 +3619,4 @@ body.loading {
 .indicator-text.changing {
   opacity: 0;
   transform: translateY(-5px);
-}
-
-/* ==========================================================================
-   ADVANCED SECURITY SHIELD (SCREEN CAPTURE / RECORDING PROTECTION)
-   ========================================================================== */
-.security-shield {
-  position: fixed;
-  inset: 0;
-  z-index: 999999;
-  background: rgba(5, 5, 5, 0.97);
-  backdrop-filter: blur(40px) saturate(180%);
-  -webkit-backdrop-filter: blur(40px) saturate(180%);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 0.5s cubic-bezier(0.16, 1, 0.3, 1);
-  will-change: opacity, backdrop-filter;
-}
-
-body.screen-secured {
-  overflow: hidden !important;
-}
-
-body.screen-secured .security-shield {
-  opacity: 1;
-  pointer-events: all;
-}
-
-body.screen-secured #site-header,
-body.screen-secured #hero,
-body.screen-secured section,
-body.screen-secured footer,
-body.screen-secured #custom-cursor,
-body.screen-secured .bg-canvas {
-  filter: blur(30px);
-  opacity: 0.15;
-  transition: filter 0.5s ease, opacity 0.5s ease;
-}
-
-.shield-container {
-  text-align: center;
-  position: relative;
-  max-width: 480px;
-  padding: 3rem;
-  border-radius: 28px;
-  background: rgba(255, 255, 255, 0.03);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  box-shadow: 0 40px 90px rgba(0, 0, 0, 0.85), inset 0 1px 0 rgba(255, 255, 255, 0.05);
-  transform: translateY(20px) scale(0.96);
-  transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-body.screen-secured .shield-container {
-  transform: translateY(0) scale(1);
-}
-
-.shield-glow {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 180px;
-  height: 180px;
-  background: radial-gradient(circle, rgba(239, 68, 68, 0.15) 0%, transparent 70%);
-  z-index: -1;
-  pointer-events: none;
-}
-
-.shield-icon {
-  width: 64px;
-  height: 64px;
-  color: #ef4444;
-  margin-bottom: 1.5rem;
-  filter: drop-shadow(0 0 15px rgba(239, 68, 68, 0.4));
-  animation: pulse-shield 2.5s infinite ease-in-out;
-}
-
-@keyframes pulse-shield {
-  0%, 100% {
-    transform: scale(1);
-    opacity: 1;
-  }
-  50% {
-    transform: scale(1.08);
-    opacity: 0.8;
-  }
-}
-
-.shield-title {
-  font-size: 1.5rem;
-  font-weight: 800;
-  letter-spacing: 0.1em;
-  color: #ffffff;
-  margin-bottom: 0.8rem;
-  text-transform: uppercase;
-}
-
-.shield-desc {
-  font-size: 0.85rem;
-  color: #a0a0a0;
-  line-height: 1.5;
-}
-
-/* Print Protection blockout */
-@media print {
-  body {
-    display: none !important;
-  }
-  html::after {
-    content: "⚠️ SECURITY ALERT: PRINTING AND SAVING AS PDF IS DISABLED FOR PRIVACY PROTECTION.";
-    font-family: 'Outfit', monospace;
-    font-size: 24px;
-    font-weight: bold;
-    color: #ef4444;
-    text-align: center;
-    position: absolute;
-    top: 40%;
-    left: 5%;
-    right: 5%;
-    display: block;
-    line-height: 1.5;
-  }
-}
-
-/* ==========================================================================
-   GPU-ACCELERATED LIQUID CIRCULAR RIPPLE THEME TRANSITION
-   ========================================================================== */
-.theme-ripple-overlay {
-  position: fixed;
-  inset: 0;
-  z-index: 999999;
-  pointer-events: none;
-  background-color: var(--bg);
-  will-change: clip-path;
-  clip-path: circle(0% at var(--ripple-x, 50%) var(--ripple-y, 50%));
-  transition: clip-path 0.85s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-.theme-ripple-overlay[data-target-theme="light"] {
-  background-color: #fbfbfd;
-}
-
-.theme-ripple-overlay[data-target-theme="dark"] {
-  background-color: #050505;
-}
-
-.theme-ripple-overlay.active {
-  clip-path: circle(150% at var(--ripple-x, 50%) var(--ripple-y, 50%));
-}
-
-/* ==========================================================================
-   4K HIGH-RESOLUTION DISPLAY OPTIMIZATIONS
-   ========================================================================== */
-@media (min-width: 2000px) {
-  :root {
-    /* Auto-scale spacing and margins for 4K/UHD screens */
-    --space-xs: clamp(0.75rem, 1.5vw, 1.25rem);
-    --space-sm: clamp(1.25rem, 2.5vw, 2rem);
-    --space-md: clamp(2rem, 5vw, 3.5rem);
-    --space-lg: clamp(3.5rem, 8vw, 6rem);
-    --space-xl: clamp(6rem, 12vw, 12rem);
-    
-    font-size: 18px; /* Base scaling for text */
-  }
-
-  .site-header {
-    max-width: 1800px;
-  }
-
-  .header-inner, 
-  .section-inner {
-    max-width: 1600px;
-    margin: 0 auto;
-  }
-  
-  .about-main,
-  .projects-grid,
-  .skills-grid,
-  .ach-grid {
-    gap: 3rem;
-  }
-  
-  .hero-content {
-    max-width: 1000px !important;
-  }
-}
-
-@media (min-width: 2800px) {
-  :root {
-    font-size: 22px; /* Super scalable typography for ultra-HD 4K displays */
-  }
-  
-  .site-header {
-    max-width: 2200px;
-  }
-
-  .header-inner, 
-  .section-inner {
-    max-width: 2000px;
-  }
 }

@@ -1,61 +1,24 @@
-// ─── HIGH-PERFORMANCE CIRCULAR RIPPLE THEME TOGGLE ───
+// ─── THEME TOGGLE ───
 const themeToggle = document.getElementById('theme-toggle');
 const mobileThemeToggle = document.getElementById('mobile-theme-toggle');
-
-let isThemeTransitionActive = false;
-
-function triggerThemeRipple(targetTheme, originX, originY) {
-  if (isThemeTransitionActive) return;
-  isThemeTransitionActive = true;
-  
-  // Create ripple overlay element
-  const ripple = document.createElement('div');
-  ripple.className = 'theme-ripple-overlay';
-  ripple.setAttribute('data-target-theme', targetTheme);
-  
-  // Set clip-path coordinates
-  ripple.style.setProperty('--ripple-x', `${originX}px`);
-  ripple.style.setProperty('--ripple-y', `${originY}px`);
-  
-  document.body.appendChild(ripple);
-  
-  // Force browser layout repaint
-  ripple.offsetHeight;
-  
-  // Trigger circle expand animation
-  ripple.classList.add('active');
-  document.body.classList.add('theme-transitioning');
-  
-  // Wait for clip-path CSS animation (850ms)
-  setTimeout(() => {
-    // Actually apply the theme change to the DOM
-    document.documentElement.setAttribute('data-theme', targetTheme);
-    localStorage.setItem('theme', targetTheme);
-    
-    // Clean up ripple element
-    ripple.remove();
-    document.body.classList.remove('theme-transitioning');
-    isThemeTransitionActive = false;
-  }, 850);
-}
+const themeIcon = document.getElementById('theme-icon');
+const mobileThemeIcon = document.getElementById('mobile-theme-icon');
 
 function setTheme(theme) {
-  // Direct setter for initial load/no transition
+  document.body.classList.add('theme-transitioning');
   document.documentElement.setAttribute('data-theme', theme);
   localStorage.setItem('theme', theme);
+  
+  setTimeout(() => {
+    document.body.classList.remove('theme-transitioning');
+  }, 800);
 }
 
 [themeToggle, mobileThemeToggle].forEach(btn => {
   if (btn) {
-    btn.addEventListener('click', (e) => {
-      const currentTheme = document.documentElement.getAttribute('data-theme') || 'dark';
-      const targetTheme = currentTheme === 'light' ? 'dark' : 'light';
-      
-      // Get click coordinates, or fall back to center of button
-      const originX = e.clientX || btn.getBoundingClientRect().left + (btn.offsetWidth / 2);
-      const originY = e.clientY || btn.getBoundingClientRect().top + (btn.offsetHeight / 2);
-      
-      triggerThemeRipple(targetTheme, originX, originY);
+    btn.addEventListener('click', () => {
+      const currentTheme = document.documentElement.getAttribute('data-theme');
+      setTheme(currentTheme === 'light' ? 'dark' : 'light');
     });
   }
 });
@@ -232,23 +195,6 @@ const sectionNames = {
   'contact': 'Let\'s Talk'
 };
 
-// Cache section offsets to eliminate layout thrashing on scroll
-let cachedSections = [];
-function cacheSectionOffsets() {
-  cachedSections = [];
-  sections.forEach((section) => {
-    cachedSections.push({
-      id: section.getAttribute("id"),
-      offsetTop: section.offsetTop
-    });
-  });
-}
-// Listen to window load and resize to re-calculate offsets
-window.addEventListener('resize', cacheSectionOffsets);
-window.addEventListener('load', cacheSectionOffsets);
-// Execute initial cache
-setTimeout(cacheSectionOffsets, 500); // Small timeout to ensure fully rendered layout offsets
-
 let lastActiveSection = '';
 let isScrolling = false;
 
@@ -261,11 +207,12 @@ window.addEventListener('scroll', () => {
       const progress = height > 0 ? Math.min(1, Math.max(0, winScroll / height)) : 0;
       if (progressBar) progressBar.style.transform = `scaleX(${progress})`;
 
-      // Active section logic using cached offsets
+      // Active section logic
       let current = "";
-      cachedSections.forEach((sec) => {
-        if (winScroll >= sec.offsetTop - 200) {
-          current = sec.id;
+      sections.forEach((section) => {
+        const sectionTop = section.offsetTop;
+        if (window.pageYOffset >= sectionTop - 200) {
+          current = section.getAttribute("id");
         }
       });
 
@@ -400,15 +347,15 @@ if (window.DeviceOrientationEvent) {
     const now = Date.now();
     
     // 1. THEME TOGGLE LOGIC
-    if (now - lastToggleTime > 1200 && !isThemeTransitionActive) {
+    if (now - lastToggleTime > 500) {
       const tilt = event.beta;
       if (tilt !== null) {
         if (tilt > (TILT_THRESHOLD + BUFFER) && lastOrientationTheme !== 'light') {
-          triggerThemeRipple('light', window.innerWidth / 2, window.innerHeight);
+          setTheme('light');
           lastOrientationTheme = 'light';
           lastToggleTime = now;
         } else if (tilt < (TILT_THRESHOLD - BUFFER) && lastOrientationTheme !== 'dark') {
-          triggerThemeRipple('dark', window.innerWidth / 2, window.innerHeight);
+          setTheme('dark');
           lastOrientationTheme = 'dark';
           lastToggleTime = now;
         }
@@ -494,15 +441,15 @@ if (isTouchDevice) {
         authStatus.style.textShadow = '0 0 15px rgba(74, 222, 128, 0.5)';
       }
       
-      setTimeout(addLog, Math.random() * 300 + 150);
+      setTimeout(addLog, Math.random() * 400 + 200);
     } else {
-      // Wait for the airplane to complete its flight smoothly to the end of the bar
+      // Done - Fade out
       setTimeout(() => {
         if (preloader) preloader.classList.add('fade-out');
         document.documentElement.classList.remove('loading');
         document.body.classList.remove('loading');
-        setTimeout(() => { if (preloader) preloader.style.display = 'none'; }, 1200);
-      }, 1650);
+        setTimeout(() => { if (preloader) preloader.style.display = 'none'; }, 800);
+      }, 1200);
     }
   }
 
@@ -511,61 +458,7 @@ if (isTouchDevice) {
   setTimeout(addLog, 800);
 })();
 
-// ─── WATERTIGHT SECURITY & PRIVACY SHIELD ───
-const securityShield = document.getElementById('security-shield');
-
-function enableSecurityBlur() {
-  document.body.classList.add('screen-secured');
-}
-
-function disableSecurityBlur() {
-  document.body.classList.remove('screen-secured');
-}
-
-// Blur screen when window loses focus (Anti-screenshot/recording/sharing shield)
-window.addEventListener('blur', enableSecurityBlur);
-window.addEventListener('focus', disableSecurityBlur);
-document.addEventListener('visibilitychange', () => {
-  if (document.visibilityState === 'hidden') {
-    enableSecurityBlur();
-  } else {
-    disableSecurityBlur();
-  }
-});
-
-// Protect Clipboard on Copy/Cut attempt
-document.addEventListener('copy', (e) => {
-  e.preventDefault();
-  if (navigator.clipboard) {
-    navigator.clipboard.writeText("⚠️ SECURITY ACTIVE: Content copying is disabled for security reasons.");
-  }
-  showToast("Copying content is disabled 🛡️");
-});
-
-document.addEventListener('cut', (e) => {
-  e.preventDefault();
-  showToast("Cutting content is disabled 🛡️");
-});
-
-// Prevent Drag & Drop of page elements/images
-document.addEventListener('dragstart', (e) => {
-  e.preventDefault();
-});
-document.addEventListener('drop', (e) => {
-  e.preventDefault();
-});
-
-// Intercept PrintScreen key & clear clipboard
-window.addEventListener('keyup', (e) => {
-  if (e.key === 'PrintScreen') {
-    if (navigator.clipboard) {
-      navigator.clipboard.writeText("⚠️ SECURITY ACTIVE: Screenshot captured text or file transfer blocked.");
-    }
-    showToast("Screenshot protection active 🛡️");
-  }
-});
-
-// DevTools Protection Hotkeys
+// ─── SECURITY & PERFORMANCE ───
 document.addEventListener('contextmenu', e => e.preventDefault());
 document.addEventListener('keydown', e => {
   if (
@@ -574,7 +467,7 @@ document.addEventListener('keydown', e => {
     (e.ctrlKey && e.key === 'U')
   ) {
     e.preventDefault();
-    document.body.innerHTML = '<div style="background:#000;color:#fff;height:100vh;display:flex;align-items:center;justify-content:center;font-family:monospace;text-align:center;padding:2rem;">SECURITY BREACH DETECTED. SYSTEM TERMINATED.<br/><br/>Please close this tab.</div>';
+    document.body.innerHTML = '<div style="background:#000;color:#fff;height:100vh;display:flex;align-items:center;justify-content:center;font-family:monospace;">SECURITY BREACH DETECTED. SYSTEM TERMINATED.</div>';
     setTimeout(() => { window.close(); }, 500);
     return false;
   }
@@ -703,8 +596,8 @@ updateClock(); // Initial call
     }
     
     init() {
-      this.x = Math.random() * window.innerWidth;
-      this.y = Math.random() * window.innerHeight;
+      this.x = Math.random() * canvas.width;
+      this.y = Math.random() * canvas.height;
       this.vx = (Math.random() - 0.5) * 0.5;
       this.vy = (Math.random() - 0.5) * 0.5;
       this.size = Math.random() * 2 + 1;
@@ -714,9 +607,9 @@ updateClock(); // Initial call
       this.x += this.vx;
       this.y += this.vy;
       
-      // Bounce off boundaries in CSS coordinates
-      if (this.x < 0 || this.x > window.innerWidth) this.vx *= -1;
-      if (this.y < 0 || this.y > window.innerHeight) this.vy *= -1;
+      // Bounce off walls
+      if (this.x < 0 || this.x > canvas.width) this.vx *= -1;
+      if (this.y < 0 || this.y > canvas.height) this.vy *= -1;
       
       // Mouse interaction
       if (mouse.x !== null) {
@@ -731,7 +624,7 @@ updateClock(); // Initial call
         }
       }
 
-      // Max velocity constraint
+      // Max velocity
       const maxSpeed = 1.5;
       const speed = Math.hypot(this.vx, this.vy);
       if (speed > maxSpeed) {
@@ -742,7 +635,7 @@ updateClock(); // Initial call
     
     draw() {
       const currentTheme = document.documentElement.getAttribute('data-theme');
-      ctx.fillStyle = currentTheme === 'light' ? 'rgba(0, 0, 0, 0.12)' : 'rgba(255, 255, 255, 0.12)';
+      ctx.fillStyle = currentTheme === 'light' ? 'rgba(0, 0, 0, 0.1)' : 'rgba(255, 255, 255, 0.1)';
       ctx.beginPath();
       ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
       ctx.fill();
@@ -750,17 +643,8 @@ updateClock(); // Initial call
   }
   
   function init() {
-    const dpr = Math.min(window.devicePixelRatio || 1, 2); // Cap at 2.0 to balance performance and sharpness
-    canvas.width = window.innerWidth * dpr;
-    canvas.height = window.innerHeight * dpr;
-    
-    // Style boundaries remain css pixels
-    canvas.style.width = window.innerWidth + 'px';
-    canvas.style.height = window.innerHeight + 'px';
-    
-    ctx.resetTransform();
-    ctx.scale(dpr, dpr);
-    
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
     particles = [];
     for (let i = 0; i < particleCount; i++) {
       particles.push(new Particle());
@@ -768,23 +652,15 @@ updateClock(); // Initial call
   }
   
   function animate() {
-    ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
     
     const currentTheme = document.documentElement.getAttribute('data-theme');
     const color = currentTheme === 'light' ? '0, 0, 0' : '255, 255, 255';
     
-    // 1. Update and Draw Particles
     for (let i = 0; i < particles.length; i++) {
       particles[i].update();
       particles[i].draw();
-    }
-    
-    // 2. Bin connection lines by opacity to minimize stroke calls (Binning optimization)
-    const lowOpacityLines = [];    // Opacity: ~0.04
-    const medOpacityLines = [];    // Opacity: ~0.08
-    const highOpacityLines = [];   // Opacity: ~0.12
-    
-    for (let i = 0; i < particles.length; i++) {
+      
       for (let j = i + 1; j < particles.length; j++) {
         const dx = particles[i].x - particles[j].x;
         const dy = particles[i].y - particles[j].y;
@@ -793,7 +669,7 @@ updateClock(); // Initial call
         if (dist < connectionDistance) {
           let opacity = 1 - (dist / connectionDistance);
           
-          // Boost opacity near mouse
+          // Brighter near mouse
           if (mouse.x !== null) {
             const mDist1 = Math.hypot(particles[i].x - mouse.x, particles[i].y - mouse.y);
             const mDist2 = Math.hypot(particles[j].x - mouse.x, particles[j].y - mouse.y);
@@ -802,56 +678,15 @@ updateClock(); // Initial call
             }
           }
           
-          const line = { x1: particles[i].x, y1: particles[i].y, x2: particles[j].x, y2: particles[j].y };
-          
-          // Assign to opacity bin
-          if (opacity < 0.4) {
-            lowOpacityLines.push(line);
-          } else if (opacity < 0.7) {
-            medOpacityLines.push(line);
-          } else {
-            highOpacityLines.push(line);
-          }
+          ctx.strokeStyle = `rgba(${color}, ${opacity * 0.12})`;
+          ctx.lineWidth = 0.8;
+          ctx.beginPath();
+          ctx.moveTo(particles[i].x, particles[i].y);
+          ctx.lineTo(particles[j].x, particles[j].y);
+          ctx.stroke();
         }
       }
     }
-    
-    // 3. Draw binned lines in single stroke calls
-    ctx.lineWidth = 0.8;
-    
-    // Low Opacity Bin
-    if (lowOpacityLines.length > 0) {
-      ctx.strokeStyle = `rgba(${color}, 0.04)`;
-      ctx.beginPath();
-      for (let k = 0; k < lowOpacityLines.length; k++) {
-        ctx.moveTo(lowOpacityLines[k].x1, lowOpacityLines[k].y1);
-        ctx.lineTo(lowOpacityLines[k].x2, lowOpacityLines[k].y2);
-      }
-      ctx.stroke();
-    }
-    
-    // Medium Opacity Bin
-    if (medOpacityLines.length > 0) {
-      ctx.strokeStyle = `rgba(${color}, 0.08)`;
-      ctx.beginPath();
-      for (let k = 0; k < medOpacityLines.length; k++) {
-        ctx.moveTo(medOpacityLines[k].x1, medOpacityLines[k].y1);
-        ctx.lineTo(medOpacityLines[k].x2, medOpacityLines[k].y2);
-      }
-      ctx.stroke();
-    }
-    
-    // High Opacity Bin
-    if (highOpacityLines.length > 0) {
-      ctx.strokeStyle = `rgba(${color}, 0.12)`;
-      ctx.beginPath();
-      for (let k = 0; k < highOpacityLines.length; k++) {
-        ctx.moveTo(highOpacityLines[k].x1, highOpacityLines[k].y1);
-        ctx.lineTo(highOpacityLines[k].x2, highOpacityLines[k].y2);
-      }
-      ctx.stroke();
-    }
-    
     requestAnimationFrame(animate);
   }
   
