@@ -31,6 +31,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="portfolio.css" />
+  <link rel="stylesheet" href="cursor.css" />
 </head>
 
 <body>
@@ -45,42 +46,14 @@
         <div class="header-id">ID: 0x4A7-ARYAN</div>
       </div>
       
-      <div class="dashboard-main">
-        <!-- Biometric Scanner -->
-        <div class="scanner-container">
-          <div class="biometric-scanner">
-            <div class="scanner-circle"></div>
-            <div class="scanner-circle"></div>
-            <div class="scanner-circle"></div>
-            <div class="scanner-icon">
-              <!-- Minimalist Fingerprint / Cyber Core Icon -->
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M12 2a10 10 0 0 0-10 10c0 5.523 4.477 10 10 10s10-4.477 10-10A10 10 0 0 0 12 2z"/>
-                <path d="M12 6a6 6 0 0 0-6 6c0 2.21 1.79 4 4 4"/>
-                <path d="M12 10a2 2 0 0 0-2 2c0 .55.45 1 1 1"/>
-                <path d="M14 12c0-.55-.45-1-1-1"/>
-                <path d="M18 12a6 6 0 0 0-6-6"/>
-              </svg>
-            </div>
-            <div class="scanner-line"></div>
-          </div>
-          <div class="scan-metadata">
-            <span class="scan-binary">10110 00101</span>
-            <span class="scan-morse">.- .-. -.-- .- -.</span>
-            <span class="scan-binary">11010 01110</span>
-          </div>
-          <div class="scan-label">SYSTEM CORE SCAN IN PROGRESS</div>
+      <!-- System Logs -->
+      <div class="terminal-logs" style="margin: 2rem 0;">
+        <div class="terminal-header-mini">
+          <div class="terminal-dots-mini"><span></span><span></span><span></span></div>
+          <div class="terminal-title-mini">kernel_init.sys</div>
         </div>
-
-        <!-- System Logs -->
-        <div class="terminal-logs">
-          <div class="terminal-header-mini">
-            <div class="terminal-dots-mini"><span></span><span></span><span></span></div>
-            <div class="terminal-title-mini">kernel_init.sys</div>
-          </div>
-          <div class="terminal-body" id="terminal-body">
-            <!-- Logs will be injected here -->
-          </div>
+        <div class="terminal-body" id="terminal-body">
+          <!-- Logs will be injected here -->
         </div>
       </div>
 
@@ -95,6 +68,19 @@
 
   <canvas id="bg-canvas" class="bg-canvas"></canvas>
   <div id="custom-cursor"></div>
+  
+  <!-- SECURITY SHIELD FOR PRIVACY PROTECTION -->
+  <div id="security-shield" class="security-shield">
+    <div class="shield-container">
+      <div class="shield-glow"></div>
+      <svg class="shield-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+      </svg>
+      <h2 class="shield-title">SECURITY SHIELD ACTIVE</h2>
+      <p class="shield-desc">Capturing & Screen Recording Protection Enabled</p>
+    </div>
+  </div>
+
   <div class="noise-overlay"></div>
   <div class="bg-blobs">
     <div class="blob"></div>
@@ -476,8 +462,8 @@
         <div class="skill-group prestige-panel animate-left">
           <h3 class="skill-group-title">Languages & Frameworks</h3>
           <div class="skill-tags">
-            <span class="skill-tag accented">PHP</span><span class="skill-tag accented">React.js</span><span class="skill-tag">JavaScript</span>
-            <span class="skill-tag">HTML5</span><span class="skill-tag">CSS3</span><span class="skill-tag accented">MySQL</span>
+            <span class="skill-tag">PHP</span><span class="skill-tag">React.js</span><span class="skill-tag">JavaScript</span>
+            <span class="skill-tag">HTML5</span><span class="skill-tag">CSS3</span><span class="skill-tag">MySQL</span>
             <span class="skill-tag">WordPress</span><span class="skill-tag">Git</span><span class="skill-tag">REST APIs</span>
             <span class="skill-tag">Java</span><span class="skill-tag">Python (Basic)</span>
           </div>
@@ -485,17 +471,17 @@
         <div class="skill-group prestige-panel animate-right">
           <h3 class="skill-group-title">Tools & Technologies</h3>
           <div class="skill-tags">
-            <span class="skill-tag">ChatGPT</span><span class="skill-tag accented">Prompt Engineering</span><span class="skill-tag">Excel</span>
+            <span class="skill-tag">ChatGPT</span><span class="skill-tag">Prompt Engineering</span><span class="skill-tag">Excel</span>
             <span class="skill-tag">VS Code</span><span class="skill-tag">GitHub</span><span class="skill-tag">Canva</span>
-            <span class="skill-tag">Google Cloud</span><span class="skill-tag accented">Google Gen AI</span>
+            <span class="skill-tag">Google Cloud</span><span class="skill-tag">Google Gen AI</span>
           </div>
         </div>
         <div class="skill-group prestige-panel animate-left">
           <h3 class="skill-group-title">Core Expertise</h3>
           <div class="skill-tags">
-            <span class="skill-tag accented">Responsive Design</span><span class="skill-tag">Version Control</span>
+            <span class="skill-tag">Responsive Design</span><span class="skill-tag">Version Control</span>
             <span class="skill-tag">SEO Basics</span><span class="skill-tag">Debugging</span>
-            <span class="skill-tag accented">AI Engineering</span><span class="skill-tag">IT Support</span>
+            <span class="skill-tag">AI Engineering</span><span class="skill-tag">IT Support</span>
             <span class="skill-tag">Cross-Browser Dev</span><span class="skill-tag">API Integration</span>
             <span class="skill-tag">Network Engineering</span><span class="skill-tag">SDLC</span>
           </div>
@@ -506,15 +492,15 @@
             <span class="skill-tag">Excellent Written & Verbal Communication</span><span class="skill-tag">Team Collaboration</span>
             <span class="skill-tag">Leadership</span><span class="skill-tag">Analytical Thinking</span>
             <span class="skill-tag">Time Management</span><span class="skill-tag">Adaptability</span>
-            <span class="skill-tag">Active Listening</span><span class="skill-tag">Fast Learner</span><span class="skill-tag accented">Growth Mindset</span>
+            <span class="skill-tag">Active Listening</span><span class="skill-tag">Fast Learner</span><span class="skill-tag">Growth Mindset</span>
           </div>
         </div>
         <div class="skill-group prestige-panel animate-left">
           <h3 class="skill-group-title">Personal Interests</h3>
           <div class="skill-tags">
-            <span class="skill-tag accented" title="YouTube/Instagram tutorials on tech and productivity">Content Creation 📹</span>
+            <span class="skill-tag" title="YouTube/Instagram tutorials on tech and productivity">Content Creation 📹</span>
             <span class="skill-tag" title="Reading, journaling, and cross-cultural communication">Self-Improvement 📚</span>
-            <span class="skill-tag accented" title="Applied for fund under Govt. of India SSIP">Startup Founder 🚀</span>
+            <span class="skill-tag" title="Applied for fund under Govt. of India SSIP">Startup Founder 🚀</span>
             <span class="skill-tag">Tech Tutorials</span>
             <span class="skill-tag">Reading & Journaling</span>
             <span class="skill-tag">Cross-Cultural Communication</span>
@@ -524,7 +510,7 @@
         <div class="skill-group prestige-panel animate-up">
           <h3 class="skill-group-title">Spoken Languages</h3>
           <div class="skill-tags">
-            <span class="skill-tag accented">Gujarati & Hindi · Native</span>
+            <span class="skill-tag skill-tag-accent">Gujarati & Hindi · Native</span>
             <span class="skill-tag">English · Intermediate (IELTS 5.5)</span>
           </div>
         </div>
