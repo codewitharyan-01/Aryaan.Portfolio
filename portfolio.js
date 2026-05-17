@@ -257,6 +257,18 @@ function copyText(text) {
   });
 }
 
+// ─── SCROLL DISCOVER BUTTON ───
+const scrollDiscoverBtn = document.getElementById('scroll-discover-btn');
+if (scrollDiscoverBtn) {
+  scrollDiscoverBtn.addEventListener('click', () => {
+    const aboutSection = document.getElementById('about');
+    if (aboutSection) {
+      aboutSection.scrollIntoView({ behavior: 'smooth' });
+    }
+  });
+}
+
+
 // ─── TOAST ───
 const toast = document.getElementById('toast');
 function showToast(msg) {
@@ -404,12 +416,8 @@ if (isTouchDevice) {
   if (!terminal) return;
 
   const logs = [
-    { text: '> Initializing biometric handshake...', type: 'cmd' },
-    { text: '[OK] Establishing encrypted tunnel...', type: 'info' },
-    { text: '[OK] Scanning retinal patterns...', type: 'info' },
     { text: '> Checking database for ID: 0x4A7...', type: 'cmd' },
     { text: '[OK] Identity confirmed: Aryan Patel', type: 'success' },
-    { text: '[OK] Decrypting portfolio assets...', type: 'info' },
     { text: '> npm run start --prestige-mode', type: 'cmd' },
     { text: 'SYSTEM READY. AUTHORIZATION GRANTED.', type: 'success' }
   ];
@@ -547,10 +555,16 @@ function updateClock() {
   const clockEl = document.getElementById('minimal-clock');
   if (clockEl) {
     const now = new Date();
-    const h = String(now.getHours()).padStart(2, '0');
-    const m = String(now.getMinutes()).padStart(2, '0');
-    const s = String(now.getSeconds()).padStart(2, '0');
-    clockEl.textContent = `${h}:${m}:${s}`;
+    let hours = now.getHours();
+    const minutes = String(now.getMinutes()).padStart(2, '0');
+    const seconds = String(now.getSeconds()).padStart(2, '0');
+    const ampm = hours >= 12 ? 'PM' : 'AM';
+    
+    hours = hours % 12;
+    hours = hours ? hours : 12; // the hour '0' should be '12'
+    const hoursStr = String(hours).padStart(2, '0');
+    
+    clockEl.textContent = `${hoursStr}:${minutes}:${seconds} ${ampm}`;
   }
 }
 setInterval(updateClock, 1000);
@@ -678,4 +692,67 @@ updateClock(); // Initial call
   
   init();
   animate();
+})();
+
+// ─── HERO STAT COUNTER ANIMATION ───
+(function () {
+  const counters = document.querySelectorAll('.counter');
+  if (!counters.length) return;
+
+  // Easing: ease-out cubic
+  function easeOutCubic(t) {
+    return 1 - Math.pow(1 - t, 3);
+  }
+
+  function animateCounter(el) {
+    const target    = parseFloat(el.dataset.target);
+    const suffix    = el.dataset.suffix  || '';
+    const decimals  = parseInt(el.dataset.decimals, 10) || 0;
+    const duration  = 1800; // ms
+    const startTime = performance.now();
+
+    el.classList.add('counting');
+
+    function tick(now) {
+      const elapsed  = now - startTime;
+      const progress = Math.min(elapsed / duration, 1);
+      const eased    = easeOutCubic(progress);
+      const current  = eased * target;
+
+      el.textContent = current.toFixed(decimals) + suffix;
+
+      if (progress < 1) {
+        requestAnimationFrame(tick);
+      } else {
+        el.textContent = target.toFixed(decimals) + suffix;
+        el.classList.remove('counting');
+        el.classList.add('done');
+        // Remove done class after pop animation completes
+        setTimeout(() => el.classList.remove('done'), 500);
+      }
+    }
+
+    requestAnimationFrame(tick);
+  }
+
+  // Trigger when the stats row enters the viewport
+  const heroStats = document.querySelector('.hero-stats');
+  if (!heroStats) return;
+
+  const statsObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        // Stagger each counter slightly
+        counters.forEach((el, i) => {
+          setTimeout(() => animateCounter(el), i * 200);
+        });
+        statsObserver.disconnect();
+      }
+    });
+  }, { threshold: 0.6 });
+
+  // Wait for preloader to finish before observing
+  setTimeout(() => {
+    statsObserver.observe(heroStats);
+  }, 8000);
 })();
